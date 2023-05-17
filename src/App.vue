@@ -1,13 +1,18 @@
 <template>
   <div id="app">
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </nav>
-    <router-view/>
+    <the-header-nav-bar></the-header-nav-bar>
+    <router-view></router-view>
   </div>
 </template>
 
+<script>
+import TheHeaderNavBar from "./components/TheHeaderNavBar.vue";
+
+export default {
+  name: "app",
+  components: { TheHeaderNavBar },
+};
+</script>
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

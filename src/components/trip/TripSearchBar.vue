@@ -1,0 +1,101 @@
+<template>
+  <b-row class="mt-4 mb-4 text-center">
+    <!-- <b-col class="sm-3">
+      <b-form-input
+        v-model.trim="dongCode"
+        placeholder="동코드 입력...(예 : 11110)"
+        @keypress.enter="sendKeyword"
+      ></b-form-input>
+    </b-col>
+    <b-col class="sm-3" align="left">
+      <b-button variant="outline-primary" @click="sendKeyword">검색</b-button>
+    </b-col> -->
+    <b-col class="sm-4">
+      <b-form-select v-model="sidoCode" :options="sidos" @change="gugunList"></b-form-select>
+    </b-col>
+    <b-col class="sm-4">
+      <b-form-select v-model="gugunCode" :options="guguns"></b-form-select>
+    </b-col>
+    <b-col class="sm-4">
+      <b-form-select v-model="att" :options="attractions"></b-form-select>
+    </b-col>
+    <b-button variant="success" @click="searchApt">검색</b-button>
+  </b-row>
+</template>
+
+<script>
+import { mapState, mapActions, mapMutations } from "vuex";
+
+export default {
+  name: "HouseSearchBar",
+  data() {
+    return {
+      sidoCode: null,
+      gugunCode: null,
+      att: null,
+      sidos: [
+        { value: null, text: "선택하세요" },
+        { value: 1, text: "서울" },
+        { value: 2, text: "인천" },
+        { value: 3, text: "대전" },
+        { value: 4, text: "대구" },
+        { value: 5, text: "광주" },
+        { value: 6, text: "부산" },
+        { value: 7, text: "울산" },
+        { value: 8, text: "세종특별자치시" },
+        { value: 31, text: "경기도" },
+        { value: 32, text: "강원도" },
+        { value: 33, text: "충청북도" },
+        { value: 34, text: "충청남도" },
+        { value: 35, text: "경상북도" },
+        { value: 36, text: "경상남도" },
+        { value: 37, text: "전라북도" },
+        { value: 38, text: "전라남도" },
+        { value: 39, text: "제주도" },
+      ],
+      attractions: [
+        { value: null, text: "관광지 유형" },
+        { value: "12", text: "관광지" },
+        { value: "14", text: "문화시설" },
+        { value: "15", text: "행사/공연/축제" },
+        { value: "25", text: "여행코스" },
+        { value: "28", text: "레포츠" },
+        { value: "32", text: "숙박" },
+        { value: "38", text: "쇼핑" },
+        { value: "39", text: "음식점" },
+      ],
+    };
+  },
+  computed: {
+    ...mapState(["guguns", "houses"]),
+    // sidos() {
+    //   return this.$store.state.sidos;
+    // },
+  },
+  created() {
+    // this.$store.dispatch("getSido");
+    // this.sidoList();
+    // this.CLEAR_SIDO_LIST();
+    this.CLEAR_APT_LIST();
+    // this.getSido();
+  },
+  methods: {
+    ...mapActions(["getGugun", "getHouseList"]),
+    ...mapMutations(["CLEAR_SIDO_LIST", "CLEAR_GUGUN_LIST", "CLEAR_APT_LIST"]),
+    // sidoList() {
+    //   this.getSido();
+    // },
+    gugunList() {
+      // console.log(this.sidoCode);
+      this.CLEAR_GUGUN_LIST();
+      this.gugunCode = null;
+      if (this.sidoCode) this.getGugun(this.sidoCode);
+    },
+    searchApt() {
+      if (this.gugunCode) this.getHouseList(this.gugunCode);
+    },
+  },
+};
+</script>
+
+<style></style>
