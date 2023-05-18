@@ -17,9 +17,9 @@
       <b-form-select v-model="gugunCode" :options="guguns"></b-form-select>
     </b-col>
     <b-col class="sm-4">
-      <b-form-select v-model="att" :options="attractions"></b-form-select>
+      <b-form-select v-model="contentTypeId" :options="types"></b-form-select>
     </b-col>
-    <b-button variant="success" @click="searchApt">검색</b-button>
+    <b-button variant="success" @click="searchAttraction">검색</b-button>
   </b-row>
 </template>
 
@@ -27,12 +27,12 @@
 import { mapState, mapActions, mapMutations } from "vuex";
 
 export default {
-  name: "HouseSearchBar",
+  name: "AttractionSearchBar",
   data() {
     return {
       sidoCode: null,
       gugunCode: null,
-      att: null,
+      contentTypeId: null,
       sidos: [
         { value: null, text: "선택하세요" },
         { value: 1, text: "서울" },
@@ -53,7 +53,7 @@ export default {
         { value: 38, text: "전라남도" },
         { value: 39, text: "제주도" },
       ],
-      attractions: [
+      types: [
         { value: null, text: "관광지 유형" },
         { value: "12", text: "관광지" },
         { value: "14", text: "문화시설" },
@@ -67,7 +67,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["guguns", "houses"]),
+    ...mapState(["guguns", "attractions"]),
     // sidos() {
     //   return this.$store.state.sidos;
     // },
@@ -76,12 +76,12 @@ export default {
     // this.$store.dispatch("getSido");
     // this.sidoList();
     // this.CLEAR_SIDO_LIST();
-    this.CLEAR_APT_LIST();
+    this.CLEAR_ATT_LIST();
     // this.getSido();
   },
   methods: {
-    ...mapActions(["getGugun", "getHouseList"]),
-    ...mapMutations(["CLEAR_SIDO_LIST", "CLEAR_GUGUN_LIST", "CLEAR_APT_LIST"]),
+    ...mapActions(["getGugun", "getAttractionList"]),
+    ...mapMutations(["CLEAR_SIDO_LIST", "CLEAR_GUGUN_LIST", "CLEAR_ATT_LIST"]),
     // sidoList() {
     //   this.getSido();
     // },
@@ -91,8 +91,9 @@ export default {
       this.gugunCode = null;
       if (this.sidoCode) this.getGugun(this.sidoCode);
     },
-    searchApt() {
-      if (this.gugunCode) this.getHouseList(this.gugunCode);
+    searchAttraction() {
+      const codes = [this.sidoCode, this.gugunCode, this.contentTypeId];
+      if (this.gugunCode) this.getAttractionList(codes);
     },
   },
 };

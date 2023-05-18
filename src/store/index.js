@@ -9,8 +9,9 @@ export default new Vuex.Store({
   state: {
     // sidos: [{ value: null, text: "선택하세요" }],
     guguns: [{ value: null, text: "선택하세요" }],
-    houses: [],
-    house: null,
+    attractions: [],
+    attraction: null,
+    overview: null,
     todos: [
       // { title: '할 일1', completed: false },
       // { title: '할 일2', completed: false },
@@ -32,7 +33,7 @@ export default new Vuex.Store({
     },
   },
   mutations: {
-    /////////////////////////////// House start /////////////////////////////////////
+    /////////////////////////////// Attraction start /////////////////////////////////////
     // SET_SIDO_LIST(state, sidos) {
     //   sidos.forEach((sido) => {
     //     state.sidos.push({ value: sido.sidoCode, text: sido.sidoName });
@@ -46,21 +47,25 @@ export default new Vuex.Store({
     // CLEAR_SIDO_LIST(state) {
     //   state.sidos = [{ value: null, text: "선택하세요" }];
     // },
-    CLEAR_APT_LIST(state) {
-      state.houses = [];
-      state.house = null;
+    CLEAR_ATT_LIST(state) {
+      state.attractions = [];
+      state.attraction = null;
     },
     CLEAR_GUGUN_LIST(state) {
       state.guguns = [{ value: null, text: "선택하세요" }];
     },
-    SET_HOUSE_LIST(state, houses) {
-      state.houses = houses;
+    SET_ATTRACTION_LIST(state, attractions) {
+      state.attractions = attractions;
     },
-    SET_DETAIL_HOUSE(state, house) {
-      // console.log("Mutations", house);
-      state.house = house;
+    SET_DETAIL_ATTRACTION(state, attraction) {
+      // console.log("Mutations", attraction);
+      state.attraction = attraction;
     },
-    /////////////////////////////// House end /////////////////////////////////////
+    SET_DETAIL_OVERVIEW(state, overview) {
+      // console.log("Mutations", attraction);
+      state.overview = overview;
+    },
+    /////////////////////////////// Attraction end /////////////////////////////////////
 
     //////////////////////////// Todo List start //////////////////////////////////
     CREATE_TODO(state, todoItem) {
@@ -84,7 +89,7 @@ export default new Vuex.Store({
     //////////////////////////// Todo List end //////////////////////////////////
   },
   actions: {
-    /////////////////////////////// House start /////////////////////////////////////
+    /////////////////////////////// Attraction start /////////////////////////////////////
     // getSido({ commit }) {
     //   http
     //     .get(`/map/sido`)
@@ -108,36 +113,45 @@ export default new Vuex.Store({
           console.log(error);
         });
     },
-    getHouseList({ commit }, gugunCode) {
+    getAttractionList({ commit }, codes) {
       // vue cli enviroment variables 검색
       //.env.local file 생성.
       // 반드시 VUE_APP으로 시작해야 한다.
-      const SERVICE_KEY = process.env.VUE_APP_APT_DEAL_API_KEY;
+      // const SERVICE_KEY = process.env.VUE_APP_APT_DEAL_API_KEY;
       // const SERVICE_KEY =
       //   "========== service key ==========";
-      const SERVICE_URL =
-        "http://openapi.molit.go.kr/OpenAPI_ToolInstallPackage/service/rest/RTMSOBJSvc/getRTMSDataSvcAptTradeDev";
+      // const SERVICE_URL =
+      //   "http://openapi.molit.go.kr/OpenAPI_ToolInstallPackage/service/rest/RTMSOBJSvc/getRTMSDataSvcAptTradeDev";
       const params = {
-        LAWD_CD: gugunCode,
-        DEAL_YMD: "202304",
-        serviceKey: decodeURIComponent(SERVICE_KEY),
+        sidoCode: codes[0],
+        gugunCode: codes[1],
+        contentTypeId: codes[2],
       };
+
       http
-        .get(SERVICE_URL, { params })
+        .get("/attraction/search", { params })
         .then(({ data }) => {
-          // console.log(commit, data);
-          commit("SET_HOUSE_LIST", data.response.body.items.item);
+          commit("SET_ATTRACTION_LIST", data);
         })
         .catch((error) => {
           console.log(error);
         });
     },
-    detailHouse({ commit }, house) {
-      // 나중에 house.일련번호를 이용하여 API 호출
-      // console.log(commit, house);
-      commit("SET_DETAIL_HOUSE", house);
+    detailAttraction({ commit }, attraction) {
+      // 나중에 attraction.일련번호를 이용하여 API 호출
+      // console.log(commit, attraction);
+      http
+        .get("/attraction/overview", {
+          params: {
+            contentId: attraction.contentId,
+          },
+        })
+        .then(({ data }) => {
+          commit("SET_DETAIL_OVERVIEW", data);
+          commit("SET_DETAIL_ATTRACTION", attraction);
+        });
     },
-    /////////////////////////////// House end /////////////////////////////////////
+    /////////////////////////////// Attraction end /////////////////////////////////////
 
     //////////////////////////// Todo List start //////////////////////////////////
     createTodo({ commit }, todoItem) {
