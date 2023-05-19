@@ -33,21 +33,44 @@
     </b-row>
     <b-row class="mb-1">
       <b-col class="text-left">
-        <b-button variant="outline-primary" @click="createReply">댓글 작성</b-button>
+        <!-- <b-button variant="outline-primary" @click="createReply">댓글 작성</b-button> -->
       </b-col>
     </b-row>
+    <!-- 댓글 start -->
+    <div>
+      <b-input-group class="mt-3 mb-3">
+        <b-form-input v-model="reply"></b-form-input>
+        <b-input-group-append>
+          <b-button variant="warning" @click="createReply"><b>댓글 작성</b></b-button>
+        </b-input-group-append>
+      </b-input-group>
+      <b-card style="height: 300px; overflow-y: scroll">
+        <div v-for="comment in comments" :key="comment.id" class="d-flex">
+          <!-- <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div> -->
+          <div class="ms-3">
+            <div class="text-left">
+              <b>{{ comment.userId }}</b>
+            </div>
+            {{ comment.content }}
+            <hr />
+          </div>
+        </div>
+      </b-card>
+    </div>
   </b-container>
 </template>
 
 <script>
-// import moment from "moment";
 import http from "@/api/http";
 
 export default {
+  components: {},
   name: "BoardDetail",
   data() {
     return {
       article: {},
+      comments: [],
+      reply: null,
     };
   },
   computed: {
@@ -59,6 +82,11 @@ export default {
   created() {
     http.get(`/board/list/${this.$route.params.articleNo}`).then(({ data }) => {
       this.article = data;
+    });
+    http.get(`/reply/list/${this.$route.params.articleNo}`).then(({ data }) => {
+      data.forEach((comment) => {
+        this.comments.push(comment);
+      });
     });
   },
   methods: {
@@ -79,6 +107,18 @@ export default {
     },
     moveList() {
       this.$router.push({ name: "boardlist" });
+    },
+    createReply() {
+      const p = {
+        articleNo: this.$route.params.articleNo,
+        userId: "z",
+        content: this.reply,
+      };
+
+      http.post(`/reply/list/${this.$route.params.articleNo}`, p).then(({ data }) => {
+        this.comments.push(data.content);
+      });
+      this.reply = null;
     },
   },
   // filters: {
