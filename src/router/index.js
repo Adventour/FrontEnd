@@ -44,12 +44,12 @@ const routes = [
   },
   {
     path: "/member/join",
-    name: "join",
+    name: "memberjoin",
     component: () => import("@/components/member/MemberJoin"),
   },
   {
     path: "/member/login",
-    name: "login",
+    name: "memberlogin",
     component: () => import("@/components/member/MemberLogin"),
   },
 ];
