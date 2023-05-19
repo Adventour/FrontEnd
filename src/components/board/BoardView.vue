@@ -45,16 +45,21 @@
         </b-input-group-append>
       </b-input-group>
       <b-card style="height: 300px; overflow-y: scroll">
-        <div v-for="comment in comments" :key="comment.id" class="d-flex">
-          <!-- <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div> -->
-          <div class="ms-3">
+        <!-- <div v-for="comment in comments" :key="comment.replyId" class="d-flex"> -->
+        <board-reply-item
+          v-for="(comment, index) in comments"
+          :key="index"
+          :comment="comment"
+        ></board-reply-item>
+        <!-- <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div> -->
+        <!-- <div class="ms-3">
             <div class="text-left">
               <b>{{ comment.userId }}</b>
             </div>
             {{ comment.content }}
             <hr />
-          </div>
-        </div>
+          </div> -->
+        <!-- </div> -->
       </b-card>
     </div>
   </b-container>
@@ -62,13 +67,15 @@
 
 <script>
 import http from "@/api/http";
+import BoardReplyItem from "./item/BoardReplyItem.vue";
 
 export default {
-  components: {},
+  components: { BoardReplyItem },
   name: "BoardDetail",
   data() {
     return {
       article: {},
+      articleNo: this.$route.params.articleNo,
       comments: [],
       reply: null,
     };
@@ -83,11 +90,7 @@ export default {
     http.get(`/board/list/${this.$route.params.articleNo}`).then(({ data }) => {
       this.article = data;
     });
-    http.get(`/reply/list/${this.$route.params.articleNo}`).then(({ data }) => {
-      data.forEach((comment) => {
-        this.comments.push(comment);
-      });
-    });
+    this.getRelpies();
   },
   methods: {
     moveModifyArticle() {
@@ -95,7 +98,7 @@ export default {
         name: "boardmodify",
         params: { articleNo: this.article.articleNo },
       });
-      //   this.$router.push({ path: `/board/modify/${this.article.articleNo}` });
+      //   this.$router.unshift({ path: `/board/modify/${this.article.articleNo}` });
     },
     deleteArticle() {
       if (confirm("정말로 삭제?")) {
@@ -106,7 +109,7 @@ export default {
       }
     },
     moveList() {
-      this.$router.push({ name: "boardlist" });
+      this.$router.unshift({ name: "boardlist" });
     },
     createReply() {
       const p = {
@@ -116,9 +119,19 @@ export default {
       };
 
       http.post(`/reply/list/${this.$route.params.articleNo}`, p).then(({ data }) => {
-        this.comments.push(data.content);
+        console.log(data);
+        this.comments.unshift(p);
       });
       this.reply = null;
+    },
+    getRelpies() {
+      http.get(`/reply/list/${this.$route.params.articleNo}`).then(({ data }) => {
+        data.forEach((comment) => {
+          this.comments.unshift(comment);
+        });
+      });
+
+      console.log(this.comments);
     },
   },
   // filters: {
