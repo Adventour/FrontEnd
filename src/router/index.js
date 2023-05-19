@@ -43,14 +43,14 @@ const routes = [
     ],
   },
   {
-    path: "/join",
-    name: "join",
-    component: () => import("@/views/AppMain"),
+    path: "/member/join",
+    name: "memberjoin",
+    component: () => import("@/components/member/MemberJoin"),
   },
   {
-    path: "/login",
-    name: "login",
-    component: () => import("@/views/AppMain"),
+    path: "/member/login",
+    name: "memberlogin",
+    component: () => import("@/components/member/MemberLogin"),
   },
 ];
 
