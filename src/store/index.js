@@ -8,7 +8,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     // sidos: [{ value: null, text: "선택하세요" }],
-    guguns: [{ value: null, text: "선택하세요" }],
+    guguns: [{ value: null, text: "구/군" }],
     attractions: [],
     attraction: null,
     overview: null,
@@ -47,12 +47,12 @@ export default new Vuex.Store({
     // CLEAR_SIDO_LIST(state) {
     //   state.sidos = [{ value: null, text: "선택하세요" }];
     // },
-    CLEAR_ATT_LIST(state) {
+    CLEAR_ATTRACTION_LIST(state) {
       state.attractions = [];
       state.attraction = null;
     },
     CLEAR_GUGUN_LIST(state) {
-      state.guguns = [{ value: null, text: "선택하세요" }];
+      state.guguns = [{ value: null, text: "구/군" }];
     },
     SET_ATTRACTION_LIST(state, attractions) {
       state.attractions = attractions;
@@ -126,11 +126,13 @@ export default new Vuex.Store({
         sidoCode: codes[0],
         gugunCode: codes[1],
         contentTypeId: codes[2],
+        title: codes[3],
       };
 
       http
         .get("/attraction/search", { params })
         .then(({ data }) => {
+          commit("CLEAR_ATTRACTION_LIST");
           commit("SET_ATTRACTION_LIST", data);
         })
         .catch((error) => {

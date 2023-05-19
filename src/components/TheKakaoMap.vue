@@ -11,6 +11,7 @@ export default {
       map: null,
       positions: [],
       markers: [],
+      overlays: [],
     };
   },
   // props로 attractions 가져와야 함
@@ -21,20 +22,38 @@ export default {
   // watch로 attractions가 바뀔때마다 실행하도록 함
   watch: {
     attraction() {
-      console.log(this.attraction);
-      const m = new kakao.maps.LatLng(this.attraction.latitude, this.attraction.longitude);
-      m.level = 3;
-      this.map.setCenter(m);
+      var content = `<div class="customoverlay">
+          <a href="https://map.kakao.com/link/map/11394059" target="_blank">
+            <span class="title">
+              후기 보기
+            </span>
+          </a>
+        </div>`;
+      // console.log(this.attraction);
+      if (this.overlays != null) {
+        for (let i = 0; i < this.overlays.length; i++) {
+          this.overlays[i].setMap(null);
+        }
+      }
+
+      if (this.attraction != null) {
+        const center = new kakao.maps.LatLng(this.attraction.latitude, this.attraction.longitude);
+        this.changeMarker(this.attraction.latitude, this.attraction.longitude, content);
+        this.map.setCenter(center);
+        this.map.setLevel(4);
+      }
     },
     attractions() {
-      this.position = [];
+      // console.log("관광지 개수: ", this.attractions.length);
+      this.deleteMarkers();
+      this.positions = [];
       this.attractions.forEach((attraction) => {
         let obj = {};
         obj.title = attraction.title;
         obj.latlng = new kakao.maps.LatLng(attraction.latitude, attraction.longitude);
         this.positions.push(obj);
       });
-
+      // console.log("마커 개수: ", this.positions.length);
       this.loadMaker();
     },
   },
@@ -63,13 +82,12 @@ export default {
       const mapContainer = document.getElementById("map"); // 지도를 표시할 div
       const mapOption = {
         center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-        level: 3, // 지도의 확대 레벨
+        level: 4, // 지도의 확대 레벨
       };
       // 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
       this.map = new kakao.maps.Map(mapContainer, mapOption);
     },
     loadMaker() {
-      this.deleteMarker();
       this.markers = [];
       this.positions.forEach((position) => {
         // 마커를 생성합니다
@@ -77,7 +95,7 @@ export default {
           map: this.map, // 마커를 표시할 지도
           position: position.latlng, // 마커를 표시할 위치
           title: position.title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-          //   image: markerImage, // 마커 이미지
+          // image: markerImage, // 마커 이미지
         });
         this.markers.push(marker);
       });
@@ -90,13 +108,25 @@ export default {
       this.map.setBounds(bounds);
     },
 
-    deleteMarker() {
-      if (this.markers.length > 0) {
-        this.markers.forEach((item) => {
-          //   console.log(item);
-          item.setMap(null);
-        });
-      }
+    deleteMarkers() {
+      this.markers.forEach((marker) => {
+        marker.setMap(null);
+      });
+    },
+
+    changeMarker(lat, lng, content) {
+      // 커스텀 오버레이가 표시될 위치입니다
+      var position = new kakao.maps.LatLng(lat, lng);
+
+      // 커스텀 오버레이를 생성합니다
+      this.overlays.push(
+        new kakao.maps.CustomOverlay({
+          map: this.map,
+          position: position,
+          content: content,
+          yAnchor: 1,
+        })
+      );
     },
   },
 };
@@ -106,5 +136,9 @@ export default {
 #map {
   width: 100%;
   height: 700px;
+  border: 3px solid;
+}
+div {
+  border: 3px solid;
 }
 </style>

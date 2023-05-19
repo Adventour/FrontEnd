@@ -10,14 +10,17 @@
     <b-col class="sm-3" align="left">
       <b-button variant="outline-primary" @click="sendKeyword">검색</b-button>
     </b-col> -->
-    <b-col class="sm-4">
+    <b-col class="sm-3" cols="2">
       <b-form-select v-model="sidoCode" :options="sidos" @change="gugunList"></b-form-select>
     </b-col>
-    <b-col class="sm-4">
+    <b-col class="sm-3" cols="2">
       <b-form-select v-model="gugunCode" :options="guguns"></b-form-select>
     </b-col>
-    <b-col class="sm-4">
+    <b-col class="sm-3" cols="3">
       <b-form-select v-model="contentTypeId" :options="types"></b-form-select>
+    </b-col>
+    <b-col class="sm-3" cols="4">
+      <b-form-input v-model="title" placeholder="관광지명 검색"></b-form-input>
     </b-col>
     <b-button variant="success" @click="searchAttraction">검색</b-button>
   </b-row>
@@ -33,8 +36,9 @@ export default {
       sidoCode: null,
       gugunCode: null,
       contentTypeId: null,
+      title: null,
       sidos: [
-        { value: null, text: "선택하세요" },
+        { value: null, text: "시/도" },
         { value: 1, text: "서울" },
         { value: 2, text: "인천" },
         { value: 3, text: "대전" },
@@ -76,15 +80,17 @@ export default {
     // this.$store.dispatch("getSido");
     // this.sidoList();
     // this.CLEAR_SIDO_LIST();
-    this.CLEAR_ATT_LIST();
+    this.CLEAR_GUGUN_LIST();
+    this.CLEAR_ATTRACTION_LIST();
     // this.getSido();
   },
   methods: {
     ...mapActions(["getGugun", "getAttractionList"]),
-    ...mapMutations(["CLEAR_SIDO_LIST", "CLEAR_GUGUN_LIST", "CLEAR_ATT_LIST"]),
+    ...mapMutations(["CLEAR_GUGUN_LIST", "CLEAR_ATTRACTION_LIST"]),
     // sidoList() {
     //   this.getSido();
     // },
+
     gugunList() {
       // console.log(this.sidoCode);
       this.CLEAR_GUGUN_LIST();
@@ -92,7 +98,10 @@ export default {
       if (this.sidoCode) this.getGugun(this.sidoCode);
     },
     searchAttraction() {
-      const codes = [this.sidoCode, this.gugunCode, this.contentTypeId];
+      if (this.title == null || this.title.length == 0) this.title = null;
+
+      const codes = [this.sidoCode, this.gugunCode, this.contentTypeId, this.title];
+      // console.log(codes);
       if (this.gugunCode) this.getAttractionList(codes);
     },
   },

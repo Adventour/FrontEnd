@@ -31,6 +31,11 @@
         </b-card>
       </b-col>
     </b-row>
+    <b-row class="mb-1">
+      <b-col class="text-left">
+        <b-button variant="outline-primary" @click="createReply">댓글 작성</b-button>
+      </b-col>
+    </b-row>
   </b-container>
 </template>
 
