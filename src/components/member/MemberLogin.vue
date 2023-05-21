@@ -49,6 +49,8 @@ export default {
             console.log(data);
             Cookies.set("accessToken", data.accessToken);
             console.log(Cookies.get("accessToken"));
+            this.$router.push({ name: "main" });
+
           } else if (status === 400) {
             alert("아이디, 비밀번호를 다시 확인해주세요");
           }
