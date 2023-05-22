@@ -40,8 +40,8 @@ export default {
 
       http
         .post(`/member/login`, {
-          userId: this.form.id,
-          userPwd: this.form.pwd,
+          id: this.form.id,
+          pwd: this.form.pwd,
         })
         .then(({ data, status }) => {
           if (status === 200) {
@@ -50,7 +50,6 @@ export default {
             Cookies.set("accessToken", data.accessToken);
             console.log(Cookies.get("accessToken"));
             this.$router.push({ name: "main" });
-
           } else if (status === 400) {
             alert("아이디, 비밀번호를 다시 확인해주세요");
           }

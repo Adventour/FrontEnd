@@ -65,13 +65,11 @@ export default {
       event.preventDefault();
       http
         .post(`/member/regist`, {
-          userId: this.form.id,
-          userName: this.form.name,
-          userPwd: this.form.pwd,
-          userEmail: this.form.email,
-          userDomain: "test",
-          userSido: 1,
-          userGugun: 1,
+          id: this.form.id,
+          name: this.form.name,
+          pwd: this.form.pwd,
+          email: this.form.email,
+          domain: "test",
         })
         .then(({ status }) => {
           if (status === 200) {

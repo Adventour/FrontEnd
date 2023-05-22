@@ -1,52 +1,82 @@
 <template>
-  <div>fuck1
-      <div>
-          <table>
-              <thead>
-                  <tr>
-                      <th>플랜 이름</th>
-                      <th>플랜</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  <tr v-for="item in plans" :key="item.planName">
-                      <td>{{item.planName}}</td>
-                      <!-- <td>{{plans}}</td> -->
-                      <td v-for="pd in item" :key="pd.planDetail">{{pd}}</td>
-                  </tr>
-              </tbody>
-          </table>
-      </div>
+  <div>
+    fuck1
+    <div>
+      <table>
+        <thead>
+          <tr>
+            <th>플랜 이름</th>
+            <th>플랜</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="item in plans" :key="item.planName">
+            <td rowspan="2">{{ item.planName }}</td>
+
+            <td v-for="pd in item.attractionImages" :key="pd">
+              <img v-if="pd" :src="pd" class="fixed-size-img" alt="" />
+              <img
+                v-else
+                src="https://github-production-user-asset-6210df.s3.amazonaws.com/76719828/239785774-5f7758df-bd48-44a8-905d-7ec8ceab98ec.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20230522%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20230522T022705Z&X-Amz-Expires=300&X-Amz-Signature=cc62cd3971d90d1fd58715c5070f0c6f771f6fe663f52ee99300b5f4887921ab&X-Amz-SignedHeaders=host&actor_id=76719828&key_id=0&repo_id=641175478"
+                class="fixed-size-img"
+                alt=""
+              />
+            </td>
+          </tr>
+
+          <tr v-for="item in plans" :key="item.planName">
+            <td v-for="pd in item.attractionTitles" :key="pd">{{ pd }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
 <script>
 import http from "@/api/http";
+import axios from "axios";
+import Cookies from "js-cookie";
 export default {
-    name: "PlanList",
+  name: "PlanList",
   data() {
     return {
-        plans: [],
-        fields: [
-            {key:"planName", label:"플랜 이름"},
-            {key:"planDetail", label:"플랜 디테일"},
-        ],
-        }
+      plans: [],
+      fields: [
+        { key: "planName", label: "플랜 이름" },
+        { key: "attractionTitles", label: "관광지 이름" },
+        { key: "attractionImages", label: "관광지 사진" },
+      ],
+    };
   },
   created() {
-    http.post(`/plan/search`, {
-        // TODO
-        //  accessToken 전송 필요 
-        userId: "z",
-    }).then(({ data }) => {
-        console.log(data);
-      this.plans = data;
+    http.get(`/plan/search`, {
+      // TODO
+      //  accessToken 전송 필요
+      // id: "ms",
     });
+    axios
+      .get("http://localhost/plan/search", {
+        headers: {
+          Authorization: `Bearer ${Cookies.get("accessToken")}`,
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        this.plans = response.data;
+      });
+    //   .then(({ data }) => {
+    //     console.log(data);
+    //     this.plans = data;
+    //   });
   },
-}
-
+};
 </script>
 
 <style>
-
+.fixed-size-img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+}
 </style>
