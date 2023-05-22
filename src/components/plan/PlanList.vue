@@ -34,7 +34,6 @@
 </template>
 
 <script>
-import http from "@/api/http";
 import axios from "axios";
 import Cookies from "js-cookie";
 export default {
@@ -49,14 +48,14 @@ export default {
       ],
     };
   },
-  created() {
-    // await 처리 해야할 듯
-    http.get(`/plan/search`, {
-      // TODO
-      //  accessToken 전송 필요
-      // id: "ms",
-    });
-    axios
+  async created() {
+    // await 처리 해야하나
+    // http.get(`/plan/search`, {
+    // TODO
+    //  accessToken 전송 필요
+    // id: "ms",
+    // });
+    await axios
       .get("http://localhost/plan/search", {
         headers: {
           Authorization: `Bearer ${Cookies.get("accessToken")}`,
