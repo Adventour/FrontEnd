@@ -45,10 +45,10 @@
 </template>
 
 <script>
-import http from "@/api/http";
-
+import axios from "axios";
+import Cookies from "js-cookie";
 export default {
-  name: "MemberJoin",
+  name: "MemberModify",
   data() {
     return {
       form: {
@@ -62,27 +62,39 @@ export default {
       show: true,
     };
   },
+  async created() {
+    await axios
+      .get("http://localhost/member/", {
+        headers: {
+          Authorization: `Bearer ${Cookies.get("accessToken")}`,
+        },
+      })
+      .then((response) => {
+        console.log(response.data);
+        this.form.id = response.data.id;
+        this.form.name = response.data.name;
+        this.form.email = response.data.email;
+      });
+  },
   methods: {
     onSubmit(event) {
       event.preventDefault();
-      http
-        .post(`/member/regist`, {
-          id: this.form.id,
-          name: this.form.name,
-          pwd: this.form.pwd,
-          email: this.form.email,
-          domain: "test",
-        })
-        .then(({ status }) => {
-          if (status === 200) {
-            alert("회원가입 성공");
-            this.$router.push({ name: "memberlogin" });
-          } else {
-            alert("회원가입 실패 ");
-          }
-        });
-
-      // .alert(JSON.stringify(this.form));
+      //   http
+      // .post(`/member/regist`, {
+      //   id: this.form.id,
+      //   name: this.form.name,
+      //   pwd: this.form.pwd,
+      //   email: this.form.email,
+      //   domain: "test",
+      // })
+      // .then(({ status }) => {
+      //   if (status === 200) {
+      //     alert("회원가입 성공");
+      //     this.$router.push({ name: "memberlogin" });
+      //   } else {
+      //     alert("회원가입 실패 ");
+      //   }
+      // });
     },
   },
 };

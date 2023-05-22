@@ -13,8 +13,8 @@
             <router-link :to="{ name: 'main' }" class="link"> 여행지검색 </router-link>
             <router-link :to="{ name: 'board' }" class="link"> 자유게시판 </router-link>
             <!-- <router-link :to="{ name: 'review' }" class="m-2 link"> 후기게시판 </router-link>
-            <router-link :to="{ name: 'hotplace' }" class="m-2 link"> 핫플자랑하기 </router-link>
-            <router-link :to="{ name: 'plan' }" class="link"> 나의여행계획 </router-link> -->
+            <router-link :to="{ name: 'hotplace' }" class="m-2 link"> 핫플자랑하기 </router-link> -->
+            <router-link :to="{ name: 'planlist' }" class="link"> 나의여행계획 </router-link>
             <!-- <b-icon icon="calendar-check" animation="fade" font-scale="2"></b-icon> -->
           </b-nav-item>
         </b-navbar-nav>
@@ -33,6 +33,11 @@
             <b-dropdown-item href="#">
               <router-link :to="{ name: 'memberlogin' }" class="link">
                 <b-icon icon="key"></b-icon> 로그인
+              </router-link>
+            </b-dropdown-item>
+            <b-dropdown-item href="#">
+              <router-link :to="{ name: 'membermodify' }" class="link">
+                <b-icon icon="key"></b-icon> 정보수정
               </router-link>
             </b-dropdown-item>
           </b-nav-item-dropdown>
