@@ -42,11 +42,17 @@
             max-rows="15"
           ></b-form-textarea>
         </b-form-group>
-
-        <b-button type="submit" variant="primary" class="m-1" v-if="this.type === 'register'"
+        <file-input-item></file-input-item>
+        <b-button
+          type="submit"
+          variant="primary"
+          class="m-1"
+          v-if="this.type === 'register'"
           >글작성</b-button
         >
-        <b-button type="submit" variant="primary" class="m-1" v-else>글수정</b-button>
+        <b-button type="submit" variant="primary" class="m-1" v-else
+          >글수정</b-button
+        >
         <b-button type="reset" variant="danger" class="m-1">초기화</b-button>
       </b-form>
     </b-col>
@@ -55,8 +61,10 @@
 
 <script>
 import http from "@/api/http";
+import FileInputItem from "./FileInputItem.vue";
 
 export default {
+  components: { FileInputItem },
   name: "BoardInputItem",
   data() {
     return {
@@ -74,13 +82,15 @@ export default {
   },
   created() {
     if (this.type === "modify") {
-      http.get(`/board/list/${this.$route.params.articleNo}`).then(({ data }) => {
-        // this.article.articleNo = data.article.articleNo;
-        // this.article.userId = data.article.userId;
-        // this.article.subject = data.article.subject;
-        // this.article.content = data.article.content;
-        this.article = data;
-      });
+      http
+        .get(`/board/list/${this.$route.params.articleNo}`)
+        .then(({ data }) => {
+          // this.article.articleNo = data.article.articleNo;
+          // this.article.userId = data.article.userId;
+          // this.article.subject = data.article.subject;
+          // this.article.content = data.article.content;
+          this.article = data;
+        });
       this.isUserid = true;
     }
   },
@@ -91,16 +101,23 @@ export default {
       let err = true;
       let msg = "";
       !this.article.userId &&
-        ((msg = "작성자 입력해주세요"), (err = false), this.$refs.userId.focus());
+        ((msg = "작성자 입력해주세요"),
+        (err = false),
+        this.$refs.userId.focus());
       err &&
         !this.article.subject &&
-        ((msg = "제목 입력해주세요"), (err = false), this.$refs.subject.focus());
+        ((msg = "제목 입력해주세요"),
+        (err = false),
+        this.$refs.subject.focus());
       err &&
         !this.article.content &&
-        ((msg = "내용 입력해주세요"), (err = false), this.$refs.content.focus());
+        ((msg = "내용 입력해주세요"),
+        (err = false),
+        this.$refs.content.focus());
 
       if (!err) alert(msg);
-      else this.type === "register" ? this.registArticle() : this.modifyArticle();
+      else
+        this.type === "register" ? this.registArticle() : this.modifyArticle();
     },
     onReset(event) {
       event.preventDefault();
