@@ -50,6 +50,7 @@ export default {
     };
   },
   created() {
+    // await 처리 해야할 듯
     http.get(`/plan/search`, {
       // TODO
       //  accessToken 전송 필요
@@ -75,8 +76,8 @@ export default {
 
 <style>
 .fixed-size-img {
-  width: 150px;
-  height: 150px;
+  width: 180px;
+  height: 180px;
   object-fit: cover;
 }
 </style>

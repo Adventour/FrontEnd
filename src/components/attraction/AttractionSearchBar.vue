@@ -19,15 +19,18 @@
     <b-col class="sm-3" cols="3">
       <b-form-select v-model="contentTypeId" :options="types"></b-form-select>
     </b-col>
-    <b-col class="sm-3" cols="4">
+    <b-col class="sm-3" cols="3">
       <b-form-input v-model="title" placeholder="관광지명 검색"></b-form-input>
     </b-col>
     <b-button variant="success" @click="searchAttraction">검색</b-button>
+    <b-button @click="addPlans">계획 추가</b-button>
   </b-row>
 </template>
 
 <script>
 import { mapState, mapActions, mapMutations } from "vuex";
+import Cookies from "js-cookie";
+import axios from "axios";
 
 export default {
   name: "AttractionSearchBar",
@@ -103,6 +106,24 @@ export default {
       const codes = [this.sidoCode, this.gugunCode, this.contentTypeId, this.title];
       // console.log(codes);
       if (this.gugunCode) this.getAttractionList(codes);
+    },
+    addPlans() {
+      // TODO
+      //  planName 입력하는 창 추가
+      var restoredSet = Cookies.get("plans");
+      if (restoredSet) {
+        var contentIdList = JSON.parse(restoredSet);
+        console.log(contentIdList);
+        axios.post("http://localhost/plan/add", contentIdList, {
+          headers: {
+            Authorization: `Bearer ${Cookies.get("accessToken")}`,
+          },
+        });
+      } else {
+        // TODO
+        //  예외 처리
+        alert("저장된 관광지가 없습니다");
+      }
     },
   },
 };
