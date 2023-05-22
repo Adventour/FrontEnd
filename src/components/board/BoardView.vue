@@ -19,12 +19,16 @@
     <b-row class="mb-1">
       <b-col>
         <b-card
-          :header-html="`<h3>${article.articleNo}.
-            ${article.subject} [${article.hit}]</h3><div><h6>${article.userId}</div><div>${article.registerTime}</h6></div>`"
+          :header-html="`<h3>${article.articleNo}.${article.subject} [${article.hit}]</h3>
+          <div><h6>${article.userId}</div><div>${article.registerTime}</h6></div>`"
           class="mb-2"
           border-variant="dark"
           no-body
         >
+          <b-img
+            v-if="saveFile !== null && saveFile.length !== 0"
+            :src="require('@/components/board/imgs/' + currentDate + '/' + saveFile)"
+          ></b-img>
           <b-card-body class="text-left">
             <div v-html="message"></div>
           </b-card-body>
@@ -44,7 +48,7 @@
           <b-button variant="warning" @click="createReply"><b>댓글 작성</b></b-button>
         </b-input-group-append>
       </b-input-group>
-      <b-card style="height: 300px; overflow-y: scroll">
+      <b-card class="mb-3" style="height: 300px; overflow-y: scroll">
         <!-- <div v-for="comment in comments" :key="comment.replyId" class="d-flex"> -->
         <board-reply-item
           v-for="(comment, index) in comments"
@@ -74,6 +78,8 @@ export default {
   name: "BoardDetail",
   data() {
     return {
+      saveFile: null,
+      currentDate: "",
       article: {},
       articleNo: this.$route.params.articleNo,
       comments: [],
@@ -90,7 +96,20 @@ export default {
     http.get(`/board/list/${this.$route.params.articleNo}`).then(({ data }) => {
       this.article = data;
     });
+
+    http.get(`/board/img/${this.$route.params.articleNo}`).then(({ data }) => {
+      this.saveFile = data;
+    });
+
     this.getRelpies();
+  },
+  mounted() {
+    const today = new Date();
+    const year = today.getFullYear().toString().substring(2);
+    const month = (today.getMonth() + 1).toString().padStart(2, "0");
+    const day = today.getDate().toString().padStart(2, "0");
+
+    this.currentDate = year + month + day;
   },
   methods: {
     moveModifyArticle() {
@@ -109,12 +128,12 @@ export default {
       }
     },
     moveList() {
-      this.$router.unshift({ name: "boardlist" });
+      this.$router.push({ name: "boardlist" });
     },
     createReply() {
       const p = {
         articleNo: this.$route.params.articleNo,
-        userId: "z",
+        userId: "ssafy",
         content: this.reply,
       };
 
