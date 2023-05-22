@@ -10,27 +10,25 @@
         <b-button variant="outline-primary" @click="moveList">목록</b-button>
       </b-col>
       <b-col class="text-right">
-        <b-button
-          variant="outline-info"
-          size="sm"
-          @click="moveModifyArticle"
-          class="mr-2"
+        <b-button variant="outline-info" size="sm" @click="moveModifyArticle" class="mr-2"
           >글수정</b-button
         >
-        <b-button variant="outline-danger" size="sm" @click="deleteArticle"
-          >글삭제</b-button
-        >
+        <b-button variant="outline-danger" size="sm" @click="deleteArticle">글삭제</b-button>
       </b-col>
     </b-row>
     <b-row class="mb-1">
       <b-col>
         <b-card
-          :header-html="`<h3>${article.articleNo}.
-            ${article.subject} [${article.hit}]</h3><div><h6>${article.userId}</div><div>${article.registerTime}</h6></div>`"
+          :header-html="`<h3>${article.articleNo}.${article.subject} [${article.hit}]</h3>
+          <div><h6>${article.userId}</div><div>${article.registerTime}</h6></div>`"
           class="mb-2"
           border-variant="dark"
           no-body
         >
+          <b-img
+            v-if="saveFile !== null && saveFile.length !== 0"
+            :src="require('@/components/board/imgs/' + currentDate + '/' + saveFile)"
+          ></b-img>
           <b-card-body class="text-left">
             <div v-html="message"></div>
           </b-card-body>
@@ -47,9 +45,7 @@
       <b-input-group class="mt-3 mb-3">
         <b-form-input v-model="reply"></b-form-input>
         <b-input-group-append>
-          <b-button variant="warning" @click="createReply"
-            ><b>댓글 작성</b></b-button
-          >
+          <b-button variant="warning" @click="createReply"><b>댓글 작성</b></b-button>
         </b-input-group-append>
       </b-input-group>
       <b-card class="mb-3" style="height: 300px; overflow-y: scroll">
@@ -82,6 +78,8 @@ export default {
   name: "BoardDetail",
   data() {
     return {
+      saveFile: null,
+      currentDate: "",
       article: {},
       articleNo: this.$route.params.articleNo,
       comments: [],
@@ -90,8 +88,7 @@ export default {
   },
   computed: {
     message() {
-      if (this.article.content)
-        return this.article.content.split("\n").join("<br>");
+      if (this.article.content) return this.article.content.split("\n").join("<br>");
       return "";
     },
   },
@@ -99,7 +96,20 @@ export default {
     http.get(`/board/list/${this.$route.params.articleNo}`).then(({ data }) => {
       this.article = data;
     });
+
+    http.get(`/board/img/${this.$route.params.articleNo}`).then(({ data }) => {
+      this.saveFile = data;
+    });
+
     this.getRelpies();
+  },
+  mounted() {
+    const today = new Date();
+    const year = today.getFullYear().toString().substring(2);
+    const month = (today.getMonth() + 1).toString().padStart(2, "0");
+    const day = today.getDate().toString().padStart(2, "0");
+
+    this.currentDate = year + month + day;
   },
   methods: {
     moveModifyArticle() {
@@ -118,7 +128,7 @@ export default {
       }
     },
     moveList() {
-      this.$router.unshift({ name: "boardlist" });
+      this.$router.push({ name: "boardlist" });
     },
     createReply() {
       const p = {
@@ -127,22 +137,18 @@ export default {
         content: this.reply,
       };
 
-      http
-        .post(`/reply/list/${this.$route.params.articleNo}`, p)
-        .then(({ data }) => {
-          console.log(data);
-          this.comments.unshift(p);
-        });
+      http.post(`/reply/list/${this.$route.params.articleNo}`, p).then(({ data }) => {
+        console.log(data);
+        this.comments.unshift(p);
+      });
       this.reply = null;
     },
     getRelpies() {
-      http
-        .get(`/reply/list/${this.$route.params.articleNo}`)
-        .then(({ data }) => {
-          data.forEach((comment) => {
-            this.comments.unshift(comment);
-          });
+      http.get(`/reply/list/${this.$route.params.articleNo}`).then(({ data }) => {
+        data.forEach((comment) => {
+          this.comments.unshift(comment);
         });
+      });
 
       console.log(this.comments);
     },

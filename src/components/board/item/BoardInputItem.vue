@@ -2,7 +2,7 @@
   <b-row class="mb-1">
     <b-col style="text-align: left">
       <b-form @submit="onSubmit" @reset="onReset">
-        <b-form-group
+        <!-- <b-form-group
           id="userId-group"
           label="작성자:"
           label-for="userId"
@@ -16,7 +16,7 @@
             required
             placeholder="작성자 입력..."
           ></b-form-input>
-        </b-form-group>
+        </b-form-group> -->
 
         <b-form-group
           id="subject-group"
@@ -33,6 +33,8 @@
           ></b-form-input>
         </b-form-group>
 
+        <board-input-selection @contentId="getContentId"></board-input-selection>
+
         <b-form-group id="content-group" label="내용:" label-for="content">
           <b-form-textarea
             id="content"
@@ -42,17 +44,11 @@
             max-rows="15"
           ></b-form-textarea>
         </b-form-group>
-        <file-input-item></file-input-item>
-        <b-button
-          type="submit"
-          variant="primary"
-          class="m-1"
-          v-if="this.type === 'register'"
+        <file-input-item @file-selected="handleFileSelected"></file-input-item>
+        <b-button type="submit" variant="primary" class="m-1" v-if="this.type === 'register'"
           >글작성</b-button
         >
-        <b-button type="submit" variant="primary" class="m-1" v-else
-          >글수정</b-button
-        >
+        <b-button type="submit" variant="primary" class="m-1" v-else>글수정</b-button>
         <b-button type="reset" variant="danger" class="m-1">초기화</b-button>
       </b-form>
     </b-col>
@@ -62,12 +58,14 @@
 <script>
 import http from "@/api/http";
 import FileInputItem from "./FileInputItem.vue";
+import BoardInputSelection from "./BoardInputSelection.vue";
 
 export default {
-  components: { FileInputItem },
+  components: { FileInputItem, BoardInputSelection },
   name: "BoardInputItem",
   data() {
     return {
+      contentId: null,
       article: {
         articleNo: 0,
         userId: "",
@@ -75,49 +73,46 @@ export default {
         content: "",
       },
       isUserid: false,
+      selectedFile: new File([], "empty.txt", { type: "text/plain" }),
     };
   },
   props: {
     type: { type: String },
   },
+
+  // computed: {
+  //   ...mapState(["attractions"]),
+  // },
   created() {
     if (this.type === "modify") {
-      http
-        .get(`/board/list/${this.$route.params.articleNo}`)
-        .then(({ data }) => {
-          // this.article.articleNo = data.article.articleNo;
-          // this.article.userId = data.article.userId;
-          // this.article.subject = data.article.subject;
-          // this.article.content = data.article.content;
-          this.article = data;
-        });
+      http.get(`/board/list/${this.$route.params.articleNo}`).then(({ data }) => {
+        // this.article.articleNo = data.article.articleNo;
+        // this.article.userId = data.article.userId;
+        // this.article.subject = data.article.subject;
+        // this.article.content = data.article.content;
+        this.article = data;
+      });
       this.isUserid = true;
     }
   },
   methods: {
+    handleFileSelected(file) {
+      this.selectedFile = file;
+      console.log("파일 선택했어요");
+    },
     onSubmit(event) {
       event.preventDefault();
-
+      console.log(this.contentId);
       let err = true;
       let msg = "";
-      !this.article.userId &&
-        ((msg = "작성자 입력해주세요"),
-        (err = false),
-        this.$refs.userId.focus());
-      err &&
-        !this.article.subject &&
-        ((msg = "제목 입력해주세요"),
-        (err = false),
-        this.$refs.subject.focus());
+      !this.article.subject &&
+        ((msg = "제목 입력해주세요"), (err = false), this.$refs.subject.focus());
       err &&
         !this.article.content &&
-        ((msg = "내용 입력해주세요"),
-        (err = false),
-        this.$refs.content.focus());
+        ((msg = "내용 입력해주세요"), (err = false), this.$refs.content.focus());
 
       if (!err) alert(msg);
-      else
-        this.type === "register" ? this.registArticle() : this.modifyArticle();
+      else this.type === "register" ? this.registArticle() : this.modifyArticle();
     },
     onReset(event) {
       event.preventDefault();
@@ -126,11 +121,18 @@ export default {
       this.article.content = "";
     },
     registArticle() {
+      const formData = new FormData();
+      formData.append("upfile", this.selectedFile);
+      formData.append("subject", this.article.subject);
+      formData.append("content", this.article.content);
+      formData.append("contentId", this.contentId);
+      // formData.append("articleNo", this.article.articleNo);
+
       http
-        .post(`/board/write`, {
-          userId: this.article.userId,
-          subject: this.article.subject,
-          content: this.article.content,
+        .post(`/board/write`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data", // 멀티파트 형식으로 설정
+          },
         })
         .then(({ status }) => {
           let msg = "등록 처리시 문제가 발생했습니다.";
@@ -142,12 +144,17 @@ export default {
         });
     },
     modifyArticle() {
+      const formData = new FormData();
+      formData.append("upfile", this.selectedFile);
+      formData.append("subject", this.article.subject);
+      formData.append("content", this.article.content);
+      formData.append("contentId", this.contentId);
+
       http
-        .put(`/board/list/${this.article.articleNo}`, {
-          articleNo: this.article.articleNo,
-          content: this.article.content,
-          subject: this.article.subject,
-          userId: this.article.userId,
+        .post(`/board/list/${this.article.articleNo}`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data", // 멀티파트 형식으로 설정
+          },
         })
         .then(({ status }) => {
           let msg = "수정 처리시 문제가 발생했습니다.";
@@ -161,6 +168,9 @@ export default {
     },
     moveList() {
       this.$router.push({ name: "boardlist" });
+    },
+    getContentId(data) {
+      this.contentId = data;
     },
   },
 };
