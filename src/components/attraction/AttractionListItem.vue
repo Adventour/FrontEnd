@@ -55,7 +55,9 @@
       <b-card-text> [{{ attraction.title }}] {{ attraction.addr }}] </b-card-text>
     </b-card> -->
     </b-row>
-    <button v-on:click="addAttraction">등록</button>
+    <button v-on:click="addAttraction" :class="{ 'red-button': isAdded, 'green-button': !isAdded }">
+      {{ isAdded ? "삭제" : "등록" }}
+    </button>
   </div>
 </template>
 
@@ -68,6 +70,7 @@ export default {
   data() {
     return {
       isColor: false,
+      isAdded: false,
     };
   },
   props: {
@@ -86,13 +89,22 @@ export default {
     addAttraction() {
       // TODO
       //  삭제 토글 처리 필요
-      console.log(this.attraction.contentId);
-      var contentIdSet = new Set();
-      var restoredSet = Cookies.get("plans");
-      if (restoredSet) contentIdSet = new Set(JSON.parse(restoredSet));
-      // console.log(JSON.parse(restoredSet));
-      contentIdSet.add(this.attraction.contentId);
-      Cookies.set("plans", JSON.stringify(Array.from(contentIdSet)));
+      if (this.isAdded == false) {
+        this.isAdded ^= true;
+        console.log(this.attraction.contentId);
+        let contentIdSet = new Set();
+        let restoredSet = Cookies.get("plans");
+        if (restoredSet) contentIdSet = new Set(JSON.parse(restoredSet));
+        contentIdSet.add(this.attraction.contentId);
+        console.log(contentIdSet);
+        Cookies.set("plans", JSON.stringify(Array.from(contentIdSet)));
+      } else {
+        this.isAdded ^= true;
+        let contentIdSet = new Set(JSON.parse(Cookies.get("plans")));
+        contentIdSet.delete(this.attraction.contentId);
+        console.log(contentIdSet);
+        Cookies.set("plans", JSON.stringify(Array.from(contentIdSet)));
+      }
     },
   },
 };
@@ -104,5 +116,11 @@ export default {
 }
 .mouse-over-bgcolor {
   background-color: lightblue;
+}
+.red-button {
+  background-color: red;
+}
+.green-button {
+  background-color: green;
 }
 </style>
