@@ -114,11 +114,16 @@ export default {
       if (restoredSet) {
         var contentIdList = JSON.parse(restoredSet);
         console.log(contentIdList);
-        axios.post("http://localhost/plan/add", contentIdList, {
-          headers: {
-            Authorization: `Bearer ${Cookies.get("accessToken")}`,
-          },
-        });
+        axios
+          .post("http://localhost/plan/add", contentIdList, {
+            headers: {
+              Authorization: `Bearer ${Cookies.get("accessToken")}`,
+            },
+          })
+          .then((response) => {
+            console.log(response);
+            Cookies.remove("plans");
+          });
       } else {
         // TODO
         //  예외 처리

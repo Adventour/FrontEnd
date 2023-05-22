@@ -86,10 +86,11 @@ export default {
     addAttraction() {
       // TODO
       //  삭제 토글 처리 필요
+      console.log(this.attraction.contentId);
       var contentIdSet = new Set();
       var restoredSet = Cookies.get("plans");
       if (restoredSet) contentIdSet = new Set(JSON.parse(restoredSet));
-      console.log(JSON.parse(restoredSet));
+      // console.log(JSON.parse(restoredSet));
       contentIdSet.add(this.attraction.contentId);
       Cookies.set("plans", JSON.stringify(Array.from(contentIdSet)));
     },
