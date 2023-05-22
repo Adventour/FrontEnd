@@ -10,6 +10,7 @@
           id="input-2"
           v-model="form.pwd"
           placeholder="비밀번호"
+          type="password"
           required
         ></b-form-input>
       </b-form-group>

@@ -33,6 +33,11 @@
                 <b-icon icon="key"></b-icon> 로그인
               </router-link>
             </b-dropdown-item>
+            <b-dropdown-item href="#">
+              <router-link :to="{ name: 'membermodify' }" class="link">
+                <b-icon icon="key"></b-icon> 정보수정
+              </router-link>
+            </b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
       </b-collapse>
