@@ -60,16 +60,21 @@ export default {
       });
   },
   methods: {
-    onSubmit(event) {
+    async onSubmit(event) {
       event.preventDefault();
       if (this.form.pwd !== this.form.checkPwd) {
         alert("비밀번호가 일치하지 않습니다");
       } else {
-        axios.put("http://localhost/member/", this.form, {
-          headers: {
-            Authorization: `Bearer ${Cookies.get("accessToken")}`,
-          },
-        });
+        await axios
+          .put("http://localhost/member/", this.form, {
+            headers: {
+              Authorization: `Bearer ${Cookies.get("accessToken")}`,
+            },
+          })
+          .then(() => {
+            alert("수정이 완료되었습니다");
+            this.$router.push({ name: "memberprofile" });
+          });
       }
     },
   },

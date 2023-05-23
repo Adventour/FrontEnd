@@ -33,6 +33,7 @@
               </router-link>
             </span>
             <span v-if="this.isLogin">
+              <span>{{ this.id }}님 안녕하세요</span>
               <router-link :to="{ name: 'memberprofile' }" class="link">
                 <!-- <b-icon icon="person-circle"></b-icon>  -->
                 내정보
@@ -54,6 +55,7 @@ export default {
     return {
       isLogin: false,
       accessToken: Cookies.get("accessToken"),
+      id: "",
     };
   },
   created() {
@@ -63,6 +65,7 @@ export default {
   methods: {
     checkLogin() {
       this.isLogin = !!Cookies.get("accessToken"); // !! 연산자를 사용하여 즉시 boolean 값으로 변환
+      this.id = JSON.parse(atob(this.accessToken.split(".")[1])).sub;
     },
     async logout() {
       await Cookies.remove("accessToken");
