@@ -21,6 +21,11 @@ const routes = [
         component: () => import("@/components/board/BoardList"),
       },
       {
+        path: "list/:contentId",
+        name: "boardreviewlist",
+        component: () => import("@/components/board/BoardReviewList"),
+      },
+      {
         path: "write",
         name: "boardwrite",
         component: () => import("@/components/board/BoardWrite"),
