@@ -92,6 +92,7 @@ export default {
       if (this.sidoCode) this.getGugun(this.sidoCode);
     },
     searchTitles() {
+      this.attractions = [];
       if (this.title == null || this.title.length == 0) this.title = null;
 
       const params = {

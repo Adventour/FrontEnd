@@ -105,7 +105,8 @@ export default {
 
       const codes = [this.sidoCode, this.gugunCode, this.contentTypeId, this.title];
       // console.log(codes);
-      if (this.gugunCode) this.getAttractionList(codes);
+      if (this.gugunCode || (this.sidoCode && this.title)) this.getAttractionList(codes);
+      else alert("시/도를 선택해주세요!");
     },
     addPlans() {
       // TODO

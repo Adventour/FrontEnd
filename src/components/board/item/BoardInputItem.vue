@@ -59,6 +59,8 @@
 import http from "@/api/http";
 import FileInputItem from "./FileInputItem.vue";
 import BoardInputSelection from "./BoardInputSelection.vue";
+// import axios from "axios";  //인가 처리를 위해 import
+// import Cookies from "js-cookie";
 
 export default {
   components: { FileInputItem, BoardInputSelection },
@@ -127,6 +129,23 @@ export default {
       formData.append("content", this.article.content);
       formData.append("contentId", this.contentId);
       // formData.append("articleNo", this.article.articleNo);
+
+      // 인가처리 axios
+      // axios
+      //   .post("http://localhost/board/write", formData, {
+      //     headers: {
+      //       Authorization: `Bearer ${Cookies.get("accessToken")}`,
+      //       "Content-Type": "multipart/form-data", // 멀티파트 형식으로 설정
+      //     },
+      //   })
+      //   .then(({ status }) => {
+      //     let msg = "등록 처리시 문제가 발생했습니다.";
+      //     if (status === 200) {
+      //       msg = "등록이 완료되었습니다.";
+      //     }
+      //     alert(msg);
+      //     this.moveList();
+      //   });
 
       http
         .post(`/board/write`, formData, {
