@@ -15,16 +15,22 @@
         <td class="test">
           {{ planDetails.attractionTitles[index] }}
         </td>
+        <td>
+          {{ planDetails.contentIds[index] }}
+        </td>
       </tr>
       <!-- <span v-for="title in planDetails.attractionTitles" :key="title">
         {{ title }}
       </span> -->
     </div>
+    <button @click="modify">수정</button>
   </div>
 </template>
 
 <script>
 import Sortable from "sortablejs";
+import axios from "axios";
+import Cookies from "js-cookie";
 
 export default {
   name: "PlanModify",
@@ -48,14 +54,30 @@ export default {
       const { oldIndex, newIndex } = event;
       const movedImage = this.planDetails.attractionImages.splice(oldIndex, 1)[0];
       const movedTitle = this.planDetails.attractionTitles.splice(oldIndex, 1)[0];
+      const movedId = this.planDetails.contentIds.splice(oldIndex, 1)[0];
       this.planDetails.attractionImages.splice(newIndex, 0, movedImage);
       this.planDetails.attractionTitles.splice(newIndex, 0, movedTitle);
+      this.planDetails.contentIds.splice(newIndex, 0, movedId);
+      console.log(this.planDetails);
     },
-    modify(item) {
-      console.log(item);
-    },
-    remove() {
-      console.log("?");
+    modify() {
+      console.log(this.planDetails.contentIds);
+      axios.put(
+        "http://localhost/plan/details",
+        {
+          contentIds: this.planDetails.contentIds,
+          planId: this.$route.params.item.planId,
+        },
+        // {
+        //   contentIds: this.planDetails.contentIds,
+        //   planId: this.$route.params.item.planId,
+        // },
+        {
+          headers: {
+            Authorization: `Bearer ${Cookies.get("accessToken")}`,
+          },
+        }
+      );
     },
   },
 };

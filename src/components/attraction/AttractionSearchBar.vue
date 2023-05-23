@@ -115,7 +115,7 @@ export default {
         var contentIdList = JSON.parse(restoredSet);
         console.log(contentIdList);
         axios
-          .post("http://localhost/plan/add", contentIdList, {
+          .post("http://localhost/plan/details", contentIdList, {
             headers: {
               Authorization: `Bearer ${Cookies.get("accessToken")}`,
             },
