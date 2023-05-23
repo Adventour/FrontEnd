@@ -25,10 +25,7 @@
           border-variant="dark"
           no-body
         >
-          <b-img
-            v-if="saveFile !== null && saveFile.length !== 0"
-            :src="require('@/components/board/imgs/' + currentDate + '/' + saveFile)"
-          ></b-img>
+          <b-img v-if="article.saveFile !== null" :src="article.saveFile"></b-img>
           <b-card-body class="text-left">
             <div v-html="message"></div>
           </b-card-body>
@@ -95,10 +92,6 @@ export default {
   created() {
     http.get(`/board/list/${this.$route.params.articleNo}`).then(({ data }) => {
       this.article = data;
-    });
-
-    http.get(`/board/img/${this.$route.params.articleNo}`).then(({ data }) => {
-      this.saveFile = data;
     });
 
     this.getRelpies();
