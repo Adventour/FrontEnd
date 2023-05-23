@@ -36,13 +36,15 @@ export default {
     };
   },
   methods: {
-    onSubmit(event) {
+    async onSubmit(event) {
       event.preventDefault();
-      http.post(`/member/login`, this.form).then(({ data, status }) => {
+      await http.post(`/member/login`, this.form).then(({ data, status }) => {
         if (status === 200) {
-          alert("로그인 성공");
           Cookies.set("accessToken", data.accessToken);
-          this.$router.push({ name: "main" });
+          // alert("로그인 성공");
+          this.$router.push({ name: "main" }).then(() => {
+            location.reload();
+          });
         } else if (status === 400) {
           alert("아이디, 비밀번호를 다시 확인해주세요");
         }
