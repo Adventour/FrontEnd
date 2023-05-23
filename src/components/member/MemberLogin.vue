@@ -38,23 +38,15 @@ export default {
   methods: {
     onSubmit(event) {
       event.preventDefault();
-
-      http
-        .post(`/member/login`, {
-          id: this.form.id,
-          pwd: this.form.pwd,
-        })
-        .then(({ data, status }) => {
-          if (status === 200) {
-            alert("로그인 성공");
-            console.log(data);
-            Cookies.set("accessToken", data.accessToken);
-            console.log(Cookies.get("accessToken"));
-            this.$router.push({ name: "main" });
-          } else if (status === 400) {
-            alert("아이디, 비밀번호를 다시 확인해주세요");
-          }
-        });
+      http.post(`/member/login`, this.form).then(({ data, status }) => {
+        if (status === 200) {
+          alert("로그인 성공");
+          Cookies.set("accessToken", data.accessToken);
+          this.$router.push({ name: "main" });
+        } else if (status === 400) {
+          alert("아이디, 비밀번호를 다시 확인해주세요");
+        }
+      });
       return null;
     },
   },

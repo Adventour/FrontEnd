@@ -1,6 +1,5 @@
 <template>
   <div>
-    fuck1
     <div>
       <table>
         <thead>
@@ -49,12 +48,6 @@ export default {
     };
   },
   async created() {
-    // await 처리 해야하나
-    // http.get(`/plan/search`, {
-    // TODO
-    //  accessToken 전송 필요
-    // id: "ms",
-    // });
     await axios
       .get("http://localhost/plan/search", {
         headers: {
@@ -65,10 +58,6 @@ export default {
         console.log(response.data);
         this.plans = response.data;
       });
-    //   .then(({ data }) => {
-    //     console.log(data);
-    //     this.plans = data;
-    //   });
   },
 };
 </script>
