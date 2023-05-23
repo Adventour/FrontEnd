@@ -26,7 +26,7 @@
                 <b-button @click="modify(item)" style="background-color: greenyellow"
                   >수정</b-button
                 >
-                <b-button @click="remove" style="background-color: red">삭제</b-button>
+                <b-button @click="remove(item.planId)" style="background-color: red">삭제</b-button>
               </td>
               <td class="plans" v-for="pd in item.attractionTitles" :key="pd">{{ pd }}</td>
             </tr>
@@ -55,7 +55,7 @@ export default {
   },
   async created() {
     await axios
-      .get("http://localhost/plan/search", {
+      .get("http://localhost/plan/", {
         headers: {
           Authorization: `Bearer ${Cookies.get("accessToken")}`,
         },
@@ -72,12 +72,12 @@ export default {
       //  1. front plans에 planId 넣기
       //  2. PK 묶고 하면 좀 이상해질수도 걍 할까
       //  3. 아니면 UserId + PlanName PK?
-      console.log(item);
+      // console.log(item);
       this.$router.push({ name: "planmodify", params: { item: item } });
     },
 
-    remove() {
-      console.log("?");
+    remove(planId) {
+      axios.delete("http://localhost/plan/details/" + planId);
     },
   },
 };
