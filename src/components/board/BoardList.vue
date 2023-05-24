@@ -11,22 +11,37 @@
       </b-col>
     </b-row>
     <b-row>
-      <b-col>
-        <b-table striped hover :items="articles" :fields="fields" @row-clicked="viewArticle">
-          <!-- 제목에 대한 강조 -->
-          <template #cell(subject)="data">
-            <router-link :to="{ name: 'boardview', params: { articleNo: data.item.articleNo } }">
-              {{ data.item.subject }}
-            </router-link>
-          </template>
-        </b-table>
-      </b-col>
+      <b-table
+        striped
+        hover
+        :items="articles"
+        :fields="fields"
+        @row-clicked="viewArticle"
+        style="table-layout: fixed"
+      >
+        <!-- 제목에 대한 강조 -->
+        <template #cell(saveFile)="data">
+          <img
+            :src="data.value"
+            alt="Image"
+            class="img-thumbnail"
+            style="height: 5rem; width: 10rem"
+          />
+        </template>
+
+        <template #cell(subject)="data">
+          <router-link :to="{ name: 'boardview', params: { articleNo: data.item.articleNo } }">
+            {{ data.item.subject }}
+          </router-link>
+        </template>
+      </b-table>
     </b-row>
   </b-container>
 </template>
 
 <script>
 import http from "@/api/http";
+// import BoardListItem from "./item/BoardListItem.vue";
 
 export default {
   name: "BoardList",
@@ -36,6 +51,7 @@ export default {
       articles: [],
       fields: [
         { key: "articleNo", label: "글번호", tdClass: "tdClass" },
+        { key: "saveFile", label: "사진", image: "tdClass" },
         { key: "subject", label: "제목", tdClass: "tdSubject" },
         { key: "userId", label: "작성자", tdClass: "tdClass" },
         { key: "registerTime", label: "작성일", tdClass: "tdClass" },

@@ -23,8 +23,12 @@
 <script>
 import http from "@/api/http";
 import Cookies from "js-cookie";
+import { mapState, mapActions } from "vuex";
 
 export default {
+  computed: {
+    ...mapState(["userId"]),
+  },
   name: "MemberLogin",
   data() {
     return {
@@ -36,11 +40,13 @@ export default {
     };
   },
   methods: {
+    ...mapActions(["setUserId"]),
     async onSubmit(event) {
       event.preventDefault();
       await http.post(`/member/login`, this.form).then(({ data, status }) => {
         if (status === 200) {
           Cookies.set("accessToken", data.accessToken);
+          this.setUserId(this.form.id);
           // alert("로그인 성공");
           this.$router.push({ name: "main" }).then(() => {
             location.reload();

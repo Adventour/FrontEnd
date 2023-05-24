@@ -12,6 +12,7 @@ export default new Vuex.Store({
     attractions: [],
     attraction: null,
     overview: null,
+    userId: "",
     todos: [
       // { title: '할 일1', completed: false },
       // { title: '할 일2', completed: false },
@@ -33,6 +34,9 @@ export default new Vuex.Store({
     },
   },
   mutations: {
+    SET_USER_ID(state, userId) {
+      state.userId = userId;
+    },
     /////////////////////////////// Attraction start /////////////////////////////////////
     // SET_SIDO_LIST(state, sidos) {
     //   sidos.forEach((sido) => {
@@ -89,18 +93,10 @@ export default new Vuex.Store({
     //////////////////////////// Todo List end //////////////////////////////////
   },
   actions: {
+    setUserId({ commit }, userId) {
+      commit("SET_USER_ID", userId);
+    },
     /////////////////////////////// Attraction start /////////////////////////////////////
-    // getSido({ commit }) {
-    //   http
-    //     .get(`/map/sido`)
-    //     .then(({ data }) => {
-    //       // console.log(data);
-    //       commit("SET_SIDO_LIST", data);
-    //     })
-    //     .catch((error) => {
-    //       console.log(error);
-    //     });
-    // },
     getGugun({ commit }, sidoCode) {
       const params = { sido: sidoCode };
       http
@@ -114,14 +110,6 @@ export default new Vuex.Store({
         });
     },
     getAttractionList({ commit }, codes) {
-      // vue cli enviroment variables 검색
-      //.env.local file 생성.
-      // 반드시 VUE_APP으로 시작해야 한다.
-      // const SERVICE_KEY = process.env.VUE_APP_APT_DEAL_API_KEY;
-      // const SERVICE_KEY =
-      //   "========== service key ==========";
-      // const SERVICE_URL =
-      //   "http://openapi.molit.go.kr/OpenAPI_ToolInstallPackage/service/rest/RTMSOBJSvc/getRTMSDataSvcAptTradeDev";
       const params = {
         sidoCode: codes[0],
         gugunCode: codes[1],

@@ -14,8 +14,15 @@ export default {
 };
 </script>
 <style>
+@font-face {
+  font-family: "Delivery";
+  src: url(assets/fonts/BMHANNAAir_otf.otf) format("woff2");
+  /* 다른 웹 폰트 파일 포맷도 필요에 따라 추가 */
+  /* 경로(path/to/font-file)는 실제 파일 경로로 수정해야 합니다. */
+}
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: "Delivery", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
