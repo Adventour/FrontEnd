@@ -113,17 +113,27 @@ export default {
       //  planName 입력하는 창 추가
       var restoredSet = Cookies.get("plans");
       if (restoredSet) {
-        var contentIdList = JSON.parse(restoredSet);
-        console.log(contentIdList);
+        var contentIds = JSON.parse(restoredSet);
+        var planName = prompt("계획 이름을 입력해주세요");
+        console.log(planName);
         axios
-          .post("http://localhost/plan/details", contentIdList, {
-            headers: {
-              Authorization: `Bearer ${Cookies.get("accessToken")}`,
+          .post(
+            "http://localhost/plan/details",
+            {
+              contentIds: contentIds,
+              planName: planName,
             },
-          })
+            {
+              headers: {
+                Authorization: `Bearer ${Cookies.get("accessToken")}`,
+              },
+            }
+          )
           .then((response) => {
             console.log(response);
             Cookies.remove("plans");
+            alert("등록이 완료되었습니다");
+            this.$router.push({ name: "planlist" });
           });
       } else {
         // TODO

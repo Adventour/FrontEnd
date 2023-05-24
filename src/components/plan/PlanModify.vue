@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3>계획 이름 : {{ planDetails.planName }}</h3>
+    <h3 class="plan-detail-name">계획 이름 : {{ planDetails.planName }}</h3>
     <div ref="sortableContainer">
       <tr v-for="(image, index) in planDetails.attractionImages" :key="image">
         <td>
@@ -12,12 +12,10 @@
             alt=""
           />
         </td>
-        <td class="test">
+        <td class="plan-detail-att">
           {{ planDetails.attractionTitles[index] }}
         </td>
-        <td>
-          {{ planDetails.contentIds[index] }}
-        </td>
+        <td>{{ planDetails.descripts[index] }}</td>
       </tr>
       <!-- <span v-for="title in planDetails.attractionTitles" :key="title">
         {{ title }}
@@ -42,6 +40,7 @@ export default {
   },
   created() {
     this.planDetails = this.$route.params.item;
+    console.log(this.planDetails);
   },
   mounted() {
     this.sortable = Sortable.create(this.$refs.sortableContainer, {
@@ -55,29 +54,29 @@ export default {
       const movedImage = this.planDetails.attractionImages.splice(oldIndex, 1)[0];
       const movedTitle = this.planDetails.attractionTitles.splice(oldIndex, 1)[0];
       const movedId = this.planDetails.contentIds.splice(oldIndex, 1)[0];
+      const movedDescript = this.planDetails.descripts.splice(oldIndex, 1)[0];
       this.planDetails.attractionImages.splice(newIndex, 0, movedImage);
       this.planDetails.attractionTitles.splice(newIndex, 0, movedTitle);
       this.planDetails.contentIds.splice(newIndex, 0, movedId);
+      this.planDetails.descripts.splice(newIndex, 0, movedDescript);
       console.log(this.planDetails);
     },
     modify() {
       console.log(this.planDetails.contentIds);
-      axios.put(
-        "http://localhost/plan/details",
-        {
-          contentIds: this.planDetails.contentIds,
-          planId: this.$route.params.item.planId,
-        },
-        // {
-        //   contentIds: this.planDetails.contentIds,
-        //   planId: this.$route.params.item.planId,
-        // },
-        {
-          headers: {
-            Authorization: `Bearer ${Cookies.get("accessToken")}`,
+      axios
+        .put(
+          "http://localhost/plan/details",
+          {
+            contentIds: this.planDetails.contentIds,
+            planId: this.$route.params.item.planId,
           },
-        }
-      );
+          {
+            headers: {
+              Authorization: `Bearer ${Cookies.get("accessToken")}`,
+            },
+          }
+        )
+        .then(this.$router.push({ name: "planlist" }));
     },
   },
 };
@@ -89,5 +88,12 @@ export default {
   height: 200px;
   object-fit: cover;
   border-radius: 50px;
+}
+.plan-detail-name {
+  padding-top: 20px;
+}
+.plan-detail-att {
+  padding-left: 40px;
+  width: 300px;
 }
 </style>
