@@ -21,26 +21,26 @@
 
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
-          <b-nav-item-dropdown right>
-            <template #button-content>
-              <b-icon icon="people" font-scale="2"></b-icon>
-            </template>
-            <b-dropdown-item href="#">
+          <b-nav-item right>
+            <span v-if="!this.isLogin">
               <router-link :to="{ name: 'memberjoin' }" class="link">
-                <b-icon icon="person-circle"></b-icon> 회원가입
+                <!-- <b-icon icon="person-circle"></b-icon>  -->
+                회원가입
               </router-link>
-            </b-dropdown-item>
-            <b-dropdown-item href="#">
               <router-link :to="{ name: 'memberlogin' }" class="link">
-                <b-icon icon="key"></b-icon> 로그인
+                <!-- <b-icon icon="key"></b-icon>  -->
+                로그인
               </router-link>
-            </b-dropdown-item>
-            <b-dropdown-item href="#">
-              <router-link :to="{ name: 'membermodify' }" class="link">
-                <b-icon icon="key"></b-icon> 정보수정
+            </span>
+            <span v-if="this.isLogin">
+              <span>{{ this.id }}님 안녕하세요</span>
+              <router-link :to="{ name: 'memberprofile' }" class="link">
+                <!-- <b-icon icon="person-circle"></b-icon>  -->
+                내정보
               </router-link>
-            </b-dropdown-item>
-          </b-nav-item-dropdown>
+              <span @click="logout">로그아웃</span>
+            </span>
+          </b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
@@ -48,10 +48,31 @@
 </template>
 
 <script>
+import Cookies from "js-cookie";
 export default {
   name: "TheHeaderNavBar",
   data() {
-    return {};
+    return {
+      isLogin: false,
+      accessToken: Cookies.get("accessToken"),
+      id: "",
+    };
+  },
+  created() {
+    this.checkLogin();
+  },
+  watch: {},
+  methods: {
+    checkLogin() {
+      this.isLogin = !!Cookies.get("accessToken"); // !! 연산자를 사용하여 즉시 boolean 값으로 변환
+      this.id = JSON.parse(atob(this.accessToken.split(".")[1])).sub;
+    },
+    async logout() {
+      await Cookies.remove("accessToken");
+      this.isLogin = false; // 로그아웃 후에 isLogin 변수를 갱신하여 로그인 상태 변경
+      // this.$router.push({ name: "main" });
+      location.reload();
+    },
   },
 };
 </script>
