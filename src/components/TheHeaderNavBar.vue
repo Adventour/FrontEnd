@@ -10,7 +10,7 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav>
           <b-nav-item href="#" right>
-            <router-link :to="{ name: 'main' }" class="link"> 여행지검색 </router-link>
+            <router-link :to="{ name: 'trip' }" class="link"> 여행지검색 </router-link>
             <router-link :to="{ name: 'board' }" class="link"> 자유게시판 </router-link>
             <!-- <router-link :to="{ name: 'review' }" class="m-2 link"> 후기게시판 </router-link>
             <router-link :to="{ name: 'hotplace' }" class="m-2 link"> 핫플자랑하기 </router-link> -->
