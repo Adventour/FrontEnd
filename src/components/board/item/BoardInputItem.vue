@@ -43,6 +43,7 @@
 import http from "@/api/http";
 import FileInputItem from "./FileInputItem.vue";
 import BoardInputSelection from "./BoardInputSelection.vue";
+import { mapState } from "vuex";
 // import axios from "axios";  //인가 처리를 위해 import
 // import Cookies from "js-cookie";
 
@@ -54,19 +55,22 @@ export default {
       contentId: null,
       article: {
         articleNo: 0,
-        userId: "",
         subject: "",
         content: "",
       },
       isUserid: false,
       // selectedFile: null,
-      selectedFile: new File([], "empty.txt", { type: "text/plain" }),
+      selectedFile: new File([], "2.amazonaws.com/b39d6742047a4eaaaca68e7df8e3f8a5.gif", {
+        type: "text/plain",
+      }),
     };
   },
   props: {
     type: { type: String },
   },
-
+  computed: {
+    ...mapState(["userId"]),
+  },
   // computed: {
   //   ...mapState(["attractions"]),
   // },
@@ -113,6 +117,8 @@ export default {
       formData.append("subject", this.article.subject);
       formData.append("content", this.article.content);
       formData.append("contentId", this.contentId);
+      formData.append("userId", this.userId);
+      console.log(this.userId);
       // formData.append("articleNo", this.article.articleNo);
 
       // 인가처리 axios

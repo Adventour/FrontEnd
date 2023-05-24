@@ -119,7 +119,7 @@ export default {
     },
 
     loadMaker(attraction) {
-      this.markers = [];
+      // this.markers = [];
       const lat = attraction.latitude;
       const lng = attraction.longitude;
       // 마커를 생성합니다
@@ -206,9 +206,8 @@ export default {
 #map {
   width: 100%;
   height: 700px;
-  border: 3px solid;
 }
 div {
-  border: 3px solid;
+  border-radius: 5%;
 }
 </style>

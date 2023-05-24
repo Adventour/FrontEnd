@@ -22,8 +22,8 @@
     <b-col class="sm-3" cols="3">
       <b-form-input v-model="title" placeholder="관광지명 검색"></b-form-input>
     </b-col>
-    <b-button variant="success" @click="searchAttraction">검색</b-button>
-    <b-button @click="addPlans">계획 추가</b-button>
+    <b-button class="mr-3" variant="success" @click="searchAttraction">검색</b-button>
+    <b-button class="ml-3" @click="addPlans">계획 추가</b-button>
   </b-row>
 </template>
 
@@ -105,8 +105,8 @@ export default {
 
       const codes = [this.sidoCode, this.gugunCode, this.contentTypeId, this.title];
       // console.log(codes);
-      if (this.gugunCode || (this.sidoCode && this.title)) this.getAttractionList(codes);
-      else alert("시/도를 선택해주세요!");
+      if (this.title || this.sidoCode) this.getAttractionList(codes);
+      else alert("검색어 혹은 시/도를 선택해주세요!");
     },
     addPlans() {
       // TODO
