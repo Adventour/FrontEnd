@@ -9,8 +9,7 @@
         <tbody>
           <div v-for="item in plans" :key="item.planId">
             <tr>
-              <td>{{ item.planName }}</td>
-
+              <td class="plan-name">{{ item.planName }}</td>
               <td class="plans" v-for="pd in item.attractionImages" :key="pd">
                 <img v-if="pd" :src="pd" class="fixed-size-img" alt="" />
                 <img
@@ -61,23 +60,24 @@ export default {
         },
       })
       .then((response) => {
-        // console.log(response.data);
         this.plans = response.data;
+        console.log(this.plans);
+        this.$route.push({ name: "planlist" });
       });
   },
   methods: {
     modify(item) {
-      // TODO
-      //  처리해야 할 것
-      //  1. front plans에 planId 넣기
-      //  2. PK 묶고 하면 좀 이상해질수도 걍 할까
-      //  3. 아니면 UserId + PlanName PK?
-      // console.log(item);
       this.$router.push({ name: "planmodify", params: { item: item } });
     },
 
     remove(planId) {
-      axios.delete("http://localhost/plan/details/" + planId);
+      axios
+        .delete("http://localhost/plan/details/" + planId, {
+          headers: {
+            Authorization: `Bearer ${Cookies.get("accessToken")}`,
+          },
+        })
+        .then(location.reload());
     },
   },
 };
@@ -94,5 +94,8 @@ export default {
   width: 100px;
   padding-left: 15px;
   padding-top: 15px;
+}
+.plan-name {
+  width: 200px;
 }
 </style>
