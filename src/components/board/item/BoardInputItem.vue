@@ -76,36 +76,32 @@ export default {
   async created() {
     if (this.type === "modify") {
       await http.get(`/board/list/${this.$route.params.articleNo}`).then(({ data }) => {
-        // this.article.articleNo = data.article.articleNo;
-        // this.article.userId = data.article.userId;
-        // this.article.subject = data.article.subject;
-        // this.article.content = data.article.content;
         this.article = data;
       });
-
       this.selectedFile = new File([], this.article.saveFile, {
         type: "image/*",
       });
-      // console.log(this.selectedFile);
-      // console.log(this.article.saveFile);
       this.isUserid = true;
     }
   },
   methods: {
     handleFileSelected(file) {
       this.selectedFile = file;
-      // console.log("파일 선택했어요");
     },
     onSubmit(event) {
       event.preventDefault();
-      console.log(this.contentId);
       let err = true;
       let msg = "";
-      !this.article.subject &&
-        ((msg = "제목 입력해주세요"), (err = false), this.$refs.subject.focus());
-      err &&
-        !this.article.content &&
-        ((msg = "내용 입력해주세요"), (err = false), this.$refs.content.focus());
+
+      if (this.contentId === null) {
+        msg = "관광지 선택해주세요";
+        err = false;
+      }
+
+      if (this.article.content.length === 0) {
+        msg = "내용 입력해주세요";
+        err = false;
+      }
 
       if (!err) alert(msg);
       else this.type === "register" ? this.registArticle() : this.modifyArticle();
@@ -123,6 +119,7 @@ export default {
       formData.append("content", this.article.content);
       formData.append("contentId", this.contentId);
       formData.append("userId", this.userId);
+
       // formData.append("articleNo", this.article.articleNo);
 
       // 인가처리 axios
@@ -159,12 +156,11 @@ export default {
     },
     modifyArticle() {
       const formData = new FormData();
-      // console.log("수정파일", this.selectedFile);
       formData.append("upfile", this.selectedFile);
       formData.append("subject", this.article.subject);
       formData.append("content", this.article.content);
       formData.append("contentId", this.contentId);
-      console.log(this.selectedFile);
+      formData.append("saveFile", this.article.saveFile);
 
       http
         .post(`/board/list/${this.article.articleNo}`, formData, {

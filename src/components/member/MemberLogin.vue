@@ -29,7 +29,11 @@ export default {
   name: "MemberLogin",
   computed: {
     ...mapState(["userId"]),
+    maskedPassword() {
+      return this.form.pwd.replace(/./g, "*");
+    },
   },
+
   data() {
     return {
       form: {
