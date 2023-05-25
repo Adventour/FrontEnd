@@ -39,10 +39,6 @@ export default {
         '                <div class="ellipsis">' +
         this.attraction.addr +
         "</div>" +
-        '                <div><a href="http://adventour.site:8080/board/list/' +
-        this.attraction.contentId +
-        '" class="link"><b>후기로 이동</a></div>' +
-        "            </div>" +
         "        </div>" +
         "    </div>" +
         "</div>";

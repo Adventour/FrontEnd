@@ -38,9 +38,16 @@
           </template>
 
           <b-card-body>
-            <b-card-text>
-              {{ attraction.addr }}
-            </b-card-text>
+            <b-row>
+              <b-col cols="8" align="left">
+                {{ attraction.addr }}
+              </b-col>
+              <b-col cols="4" align="right">
+                <b-button v-on:click="linkReview" style="background-color: cornflowerblue">
+                  후기
+                </b-button>
+              </b-col>
+            </b-row>
           </b-card-body>
         </b-card>
       </div>
@@ -96,6 +103,12 @@ export default {
         console.log(contentIdSet);
         Cookies.set("plans", JSON.stringify(Array.from(contentIdSet)));
       }
+    },
+    linkReview() {
+      this.$router.push({
+        name: "boardreviewlist",
+        params: { contentId: this.attraction.contentId },
+      });
     },
   },
 };
