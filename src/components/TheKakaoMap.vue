@@ -39,7 +39,7 @@ export default {
         '                <div class="ellipsis">' +
         this.attraction.addr +
         "</div>" +
-        '                <div><a href="http://localhost:8080/board/list/' +
+        '                <div><a href="http://adventour.site:8080/board/list/' +
         this.attraction.contentId +
         '" class="link"><b>후기로 이동</a></div>' +
         "            </div>" +
@@ -47,7 +47,7 @@ export default {
         "    </div>" +
         "</div>";
       // var content = `<div class="customoverlay">
-      //     <a href="http://localhost:8080/board/list/${this.attraction.contentId}" onclick="">
+      //     <a href="http://adventour.site:8080/board/list/${this.attraction.contentId}" onclick="">
       //       <span class="title">
       //         후기 보기
       //       </span>
@@ -145,7 +145,7 @@ export default {
         '                <div class="ellipsis">' +
         attraction.addr +
         "</div>" +
-        '                <div><a href="http://localhost:8080/board/list/' +
+        '                <div><a href="http://adventour.site:8080/board/list/' +
         attraction.contentId +
         '" class="link"><b>후기로 이동</a></div>' +
         "            </div>" +
