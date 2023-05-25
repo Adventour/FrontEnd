@@ -22,7 +22,9 @@
             </tr>
             <tr>
               <td>
-                <b-button @click="modify(item)" style="background-color: greenyellow"
+                <b-button
+                  @click="modify(item)"
+                  style="background-color: greenyellow; margin-right: 10px"
                   >수정</b-button
                 >
                 <b-button @click="remove(item.planId)" style="background-color: red">삭제</b-button>
@@ -92,10 +94,12 @@ export default {
 }
 .plans {
   width: 100px;
-  padding-left: 15px;
-  padding-top: 15px;
+  padding-left: 20px;
+  padding-top: 30px;
+  font-size: 20px;
 }
 .plan-name {
-  width: 200px;
+  width: 250px;
+  font-size: 30px;
 }
 </style>

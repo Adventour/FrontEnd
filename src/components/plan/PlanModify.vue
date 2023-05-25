@@ -4,18 +4,26 @@
     <div ref="sortableContainer">
       <tr v-for="(image, index) in planDetails.attractionImages" :key="image">
         <td>
-          <img v-if="image" :src="image" class="fixed-size-img-dt" alt="" />
-          <img
-            v-else
-            src="https://github-production-user-asset-6210df.s3.amazonaws.com/76719828/239785774-5f7758df-bd48-44a8-905d-7ec8ceab98ec.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20230522%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20230522T022705Z&X-Amz-Expires=300&X-Amz-Signature=cc62cd3971d90d1fd58715c5070f0c6f771f6fe663f52ee99300b5f4887921ab&X-Amz-SignedHeaders=host&actor_id=76719828&key_id=0&repo_id=641175478"
-            class="fixed-size-img-dt"
-            alt=""
-          />
+          <div>
+            <img v-if="image" :src="image" class="fixed-size-img-dt" alt="" />
+            <img
+              v-else
+              src="https://github-production-user-asset-6210df.s3.amazonaws.com/76719828/239785774-5f7758df-bd48-44a8-905d-7ec8ceab98ec.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20230522%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20230522T022705Z&X-Amz-Expires=300&X-Amz-Signature=cc62cd3971d90d1fd58715c5070f0c6f771f6fe663f52ee99300b5f4887921ab&X-Amz-SignedHeaders=host&actor_id=76719828&key_id=0&repo_id=641175478"
+              class="fixed-size-img-dt"
+              alt=""
+            />
+          </div>
         </td>
         <td class="plan-detail-att">
-          {{ planDetails.attractionTitles[index] }}
+          <div>
+            {{ planDetails.attractionTitles[index] }}
+          </div>
         </td>
-        <td>{{ planDetails.descripts[index] }}</td>
+        <td class="plan-detail-descript">
+          <div class="test">
+            {{ planDetails.descripts[index] }}
+          </div>
+        </td>
       </tr>
       <!-- <span v-for="title in planDetails.attractionTitles" :key="title">
         {{ title }}
@@ -76,7 +84,11 @@ export default {
             },
           }
         )
-        .then(this.$router.push({ name: "planlist" }));
+        .then(
+          this.$router.push({ name: "planlist" }).then(() => {
+            location.reload();
+          })
+        );
     },
   },
 };
@@ -84,16 +96,27 @@ export default {
 
 <style>
 .fixed-size-img-dt {
-  width: 200px;
-  height: 200px;
+  width: 250px;
+  height: 250px;
   object-fit: cover;
+  margin-left: 30px;
+  margin-bottom: 15px;
   border-radius: 50px;
 }
 .plan-detail-name {
-  padding-top: 20px;
+  font-size: 40px;
+  margin-top: 40px;
+  margin-bottom: 30px;
 }
 .plan-detail-att {
-  padding-left: 40px;
+  font-size: 30px;
+  margin-left: 40px;
   width: 300px;
+}
+.plan-detail-descript {
+  margin-right: 100px;
+  vertical-align: middle;
+  text-align: left;
+  overflow: auto;
 }
 </style>
