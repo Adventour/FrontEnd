@@ -50,7 +50,7 @@ export default {
   },
   async created() {
     await axios
-      .get("http://localhost/member/", {
+      .get("http://adventour.site:8080/member/", {
         headers: {
           Authorization: `Bearer ${Cookies.get("accessToken")}`,
         },
@@ -66,7 +66,7 @@ export default {
         alert("비밀번호가 일치하지 않습니다");
       } else {
         await axios
-          .put("http://localhost/member/", this.form, {
+          .put("http://adventour.site:8080/member/", this.form, {
             headers: {
               Authorization: `Bearer ${Cookies.get("accessToken")}`,
             },

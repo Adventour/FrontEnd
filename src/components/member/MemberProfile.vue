@@ -56,7 +56,7 @@ export default {
   },
   async created() {
     await axios
-      .get("http://localhost/member/", {
+      .get("http://adventour.site:8080/member/", {
         headers: {
           Authorization: `Bearer ${Cookies.get("accessToken")}`,
         },

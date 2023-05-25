@@ -54,7 +54,7 @@ export default {
   },
   async created() {
     await axios
-      .get("http://localhost/plan/", {
+      .get("http://adventour.site:8080/plan/", {
         headers: {
           Authorization: `Bearer ${Cookies.get("accessToken")}`,
         },
@@ -72,7 +72,7 @@ export default {
 
     remove(planId) {
       axios
-        .delete("http://localhost/plan/details/" + planId, {
+        .delete("http://adventour.site:8080/plan/details/" + planId, {
           headers: {
             Authorization: `Bearer ${Cookies.get("accessToken")}`,
           },

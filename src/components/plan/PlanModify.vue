@@ -65,7 +65,7 @@ export default {
       console.log(this.planDetails.contentIds);
       axios
         .put(
-          "http://localhost/plan/details",
+          "http://adventour.site:8080/plan/details",
           {
             contentIds: this.planDetails.contentIds,
             planId: this.$route.params.item.planId,
