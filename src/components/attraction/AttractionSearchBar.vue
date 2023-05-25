@@ -118,7 +118,7 @@ export default {
         console.log(planName);
         axios
           .post(
-            "http://localhost/plan/details",
+            "http://adventour.site:8080/plan/details",
             {
               contentIds: contentIds,
               planName: planName,
