@@ -102,14 +102,14 @@ export default {
         title: this.title,
       };
       //   console.log(params);
-      if (this.gugunCode) {
+      if (this.title || this.sidoCode) {
         http.get("/attraction/search", { params }).then(({ data }) => {
           console.log(data);
           data.forEach((attraction) => {
             this.attractions.push({ value: attraction.contentId, text: attraction.title });
           });
         });
-      }
+      } else alert("검색어 혹은 시/도를 선택해주세요!");
     },
     sendContentId() {
       //   console.log("자식에서 콘텐트아이디", this.contentId);
