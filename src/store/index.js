@@ -37,6 +37,10 @@ export default new Vuex.Store({
     SET_USER_ID(state, userId) {
       state.userId = userId;
     },
+
+    CLEAN_USER_ID(state) {
+      state.userId = "";
+    },
     /////////////////////////////// Attraction start /////////////////////////////////////
     // SET_SIDO_LIST(state, sidos) {
     //   sidos.forEach((sido) => {
@@ -95,6 +99,10 @@ export default new Vuex.Store({
   actions: {
     setUserId({ commit }, userId) {
       commit("SET_USER_ID", userId);
+    },
+
+    cleanUserId({ commit }) {
+      commit("CLEAN_USER_ID");
     },
     /////////////////////////////// Attraction start /////////////////////////////////////
     getGugun({ commit }, sidoCode) {

@@ -26,10 +26,10 @@ import Cookies from "js-cookie";
 import { mapState, mapActions } from "vuex";
 
 export default {
+  name: "MemberLogin",
   computed: {
     ...mapState(["userId"]),
   },
-  name: "MemberLogin",
   data() {
     return {
       form: {

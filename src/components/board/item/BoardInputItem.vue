@@ -57,12 +57,11 @@ export default {
         articleNo: 0,
         subject: "",
         content: "",
+        saveFile: null,
       },
       isUserid: false,
       // selectedFile: null,
-      selectedFile: new File([], "2.amazonaws.com/b39d6742047a4eaaaca68e7df8e3f8a5.gif", {
-        type: "text/plain",
-      }),
+      selectedFile: null,
     };
   },
   props: {
@@ -74,22 +73,28 @@ export default {
   // computed: {
   //   ...mapState(["attractions"]),
   // },
-  created() {
+  async created() {
     if (this.type === "modify") {
-      http.get(`/board/list/${this.$route.params.articleNo}`).then(({ data }) => {
+      await http.get(`/board/list/${this.$route.params.articleNo}`).then(({ data }) => {
         // this.article.articleNo = data.article.articleNo;
         // this.article.userId = data.article.userId;
         // this.article.subject = data.article.subject;
         // this.article.content = data.article.content;
         this.article = data;
       });
+
+      this.selectedFile = new File([], this.article.saveFile, {
+        type: "image/*",
+      });
+      // console.log(this.selectedFile);
+      // console.log(this.article.saveFile);
       this.isUserid = true;
     }
   },
   methods: {
     handleFileSelected(file) {
       this.selectedFile = file;
-      console.log("파일 선택했어요");
+      // console.log("파일 선택했어요");
     },
     onSubmit(event) {
       event.preventDefault();
@@ -118,7 +123,6 @@ export default {
       formData.append("content", this.article.content);
       formData.append("contentId", this.contentId);
       formData.append("userId", this.userId);
-      console.log(this.userId);
       // formData.append("articleNo", this.article.articleNo);
 
       // 인가처리 axios
@@ -155,11 +159,12 @@ export default {
     },
     modifyArticle() {
       const formData = new FormData();
-      console.log("수정파일", this.selectedFile);
+      // console.log("수정파일", this.selectedFile);
       formData.append("upfile", this.selectedFile);
       formData.append("subject", this.article.subject);
       formData.append("content", this.article.content);
       formData.append("contentId", this.contentId);
+      console.log(this.selectedFile);
 
       http
         .post(`/board/list/${this.article.articleNo}`, formData, {

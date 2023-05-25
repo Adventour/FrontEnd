@@ -26,7 +26,7 @@
                   <h4 class="mb-0">{{ attraction.title }}</h4>
                 </div>
               </b-col>
-              <b-col clos="4">
+              <b-col clos="4" align="right">
                 <b-button
                   v-on:click="addAttraction"
                   :class="{ 'red-button': isAdded, 'green-button': !isAdded }"

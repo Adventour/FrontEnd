@@ -19,22 +19,26 @@
     <b-row class="mb-1">
       <b-col>
         <b-card
-          :header-html="`<h3>${article.articleNo}.${article.subject} [${article.hit}]</h3>
-          <div><h6>${article.userId}</div><div>${article.registerTime}</h6></div>`"
+          align="left"
+          :header-html="`<h3 style='font-size: 3rem'>${article.subject}</h3>
+          <div align='right'><h4>${article.userId}</div>
+          <div align='right'>조회수: ${article.hit}</div>
+          <div align='right'>${article.registerTime}</h6></div>`"
           class="mb-2"
           border-variant="dark"
           no-body
         >
-          <b-img v-if="article.saveFile !== null" :src="article.saveFile"></b-img>
           <b-card-body class="text-left">
-            <div v-html="message"></div>
+            <b-img
+              class="mb-3"
+              v-if="article.saveFile !== null"
+              :src="article.saveFile"
+              style="max-width: 400px; max-height: 300px"
+            ></b-img>
+            <hr />
+            <div v-html="message" style="font-size: 1.5rem"></div>
           </b-card-body>
         </b-card>
-      </b-col>
-    </b-row>
-    <b-row class="mb-1">
-      <b-col class="text-left">
-        <!-- <b-button variant="outline-primary" @click="createReply">댓글 작성</b-button> -->
       </b-col>
     </b-row>
     <!-- 댓글 start -->
@@ -52,15 +56,6 @@
           :key="index"
           :comment="comment"
         ></board-reply-item>
-        <!-- <div class="flex-shrink-0"><img class="rounded-circle" src="https://dummyimage.com/50x50/ced4da/6c757d.jpg" alt="..." /></div> -->
-        <!-- <div class="ms-3">
-            <div class="text-left">
-              <b>{{ comment.userId }}</b>
-            </div>
-            {{ comment.content }}
-            <hr />
-          </div> -->
-        <!-- </div> -->
       </b-card>
     </div>
   </b-container>
@@ -69,6 +64,7 @@
 <script>
 import http from "@/api/http";
 import BoardReplyItem from "./item/BoardReplyItem.vue";
+import { mapState } from "vuex";
 
 export default {
   components: { BoardReplyItem },
@@ -84,6 +80,7 @@ export default {
     };
   },
   computed: {
+    ...mapState(["userId"]),
     message() {
       if (this.article.content) return this.article.content.split("\n").join("<br>");
       return "";
@@ -123,27 +120,24 @@ export default {
     moveList() {
       this.$router.push({ name: "boardlist" });
     },
-    createReply() {
+    async createReply() {
       const p = {
         articleNo: this.$route.params.articleNo,
-        userId: "ssafy",
+        userId: this.userId,
         content: this.reply,
       };
 
-      http.post(`/reply/list/${this.$route.params.articleNo}`, p).then(({ data }) => {
-        console.log(data);
-        this.comments.unshift(p);
-      });
-      this.reply = null;
+      await http.post(`/reply/list/${this.$route.params.articleNo}`, p);
+      this.reply = "";
+      this.getRelpies();
     },
     getRelpies() {
+      this.comments = [];
       http.get(`/reply/list/${this.$route.params.articleNo}`).then(({ data }) => {
         data.forEach((comment) => {
           this.comments.unshift(comment);
         });
       });
-
-      console.log(this.comments);
     },
   },
   // filters: {

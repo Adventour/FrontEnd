@@ -1,7 +1,7 @@
 <template>
   <div>
     <b-container class="bv-example-row mt-3 text-center">
-      <h3>자유게시판</h3>
+      <h3>후기게시판</h3>
       <router-view></router-view>
     </b-container>
   </div>
