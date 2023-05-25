@@ -13,7 +13,7 @@ jobs:
         uses: actions/checkout@v2
 
       # 도커 이미지에 env 파일 추가
-      - name: Create .env.local file
+      - name: Create .env.local file 
         run: |
           touch .env.local
           echo ${{ secrets.ENV_VAR }}\ >> .env.local
