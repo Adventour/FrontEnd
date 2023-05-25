@@ -14,31 +14,13 @@
           @sliding-end="onSlideEnd"
         >
           <!-- Text slides with image -->
-          <b-carousel-slide
-            caption="First slide"
-            text="Nulla vitae elit libero, a pharetra augue mollis interdum."
-            img-src="https://picsum.photos/1024/480/?image=52"
-          ></b-carousel-slide>
-
-          <!-- Slides with custom text -->
-          <b-carousel-slide img-src="https://picsum.photos/1024/480/?image=54">
-            <h1>Hello world!</h1>
-          </b-carousel-slide>
-
-          <!-- Slides with image only -->
-          <b-carousel-slide img-src="https://picsum.photos/1024/480/?image=58"></b-carousel-slide>
-
-          <!-- Slides with img slot -->
-          <!-- Note the classes .d-block and .img-fluid to prevent browser default image alignment -->
-          <b-carousel-slide>
-            <template #img>
-              <img
-                class="d-block"
-                src="https://picsum.photos/1024/480/?image=55"
-                alt="image slot"
-              />
-            </template>
-          </b-carousel-slide>
+          <b-carousel-slide :img-src="require('@/assets/게시판 댓글.png')"></b-carousel-slide>
+          <b-carousel-slide :img-src="require('@/assets/여행지 검색.png')"></b-carousel-slide>
+          <b-carousel-slide :img-src="require('@/assets/여행지 등록.png')"></b-carousel-slide>
+          <b-carousel-slide :img-src="require('@/assets/여행지 목록.png')"></b-carousel-slide>
+          <b-carousel-slide :img-src="require('@/assets/여행지 세부정보.png')"></b-carousel-slide>
+          <b-carousel-slide :img-src="require('@/assets/회원가입.png')"></b-carousel-slide>
+          <b-carousel-slide :img-src="require('@/assets/후기 게시판.png')"></b-carousel-slide>
         </b-carousel>
       </b-col>
       <b-col cols="4">
