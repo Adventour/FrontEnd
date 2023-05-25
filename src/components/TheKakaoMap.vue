@@ -100,7 +100,7 @@ export default {
     loadScript() {
       const script = document.createElement("script");
       script.src =
-        "//dapi.kakao.com/v2/maps/sdk.js?appkey=" + "b30f204e550d119" + "&autoload=false";
+        "//dapi.kakao.com/v2/maps/sdk.js?appkey=b30f204e550d119b42c960c82309eb19&autoload=false";
       /* global kakao */
       script.onload = () => window.kakao.maps.load(this.loadMap);
       document.head.appendChild(script);
