@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <b-form @submit="onSubmit" v-if="show">
+  <div class="login-form mt-5">
+    <b-form @submit="onSubmit" v-if="show" align="left">
       <b-form-group id="input-group-1" label="아이디" label-for="input-1">
         <b-form-input id="input-1" v-model="form.id" placeholder="아이디" required></b-form-input>
       </b-form-group>
@@ -43,7 +43,7 @@
           비밀번호가 일치하지 않습니다
         </ul> -->
       </b-form-group>
-      <b-button type="submit" variant="primary">회원가입</b-button>
+      <b-button type="submit" variant="success">회원가입</b-button>
     </b-form>
   </div>
 </template>
@@ -87,4 +87,10 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.login-form {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 400px;
+}
+</style>

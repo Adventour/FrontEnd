@@ -65,7 +65,7 @@
         <!-- Right aligned nav items -->
         <b-navbar-nav class="ml-auto">
           <b-nav-item right>
-            <span v-if="!this.isLogin">
+            <span v-if="!userId">
               <router-link :to="{ name: 'memberjoin' }" class="link mr-3">
                 <!-- <b-icon icon="person-circle"></b-icon>  -->
                 회원가입
@@ -75,8 +75,8 @@
                 로그인
               </router-link>
             </span>
-            <span v-if="this.isLogin">
-              <span>{{ this.id }}님 안녕하세요</span>
+            <span v-if="userId">
+              <span>{{ userId }}님 안녕하세요</span>
               <router-link :to="{ name: 'memberprofile' }" class="link ml-3 mr-3">
                 <!-- <b-icon icon="person-circle"></b-icon>  -->
                 내정보

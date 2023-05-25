@@ -50,6 +50,7 @@
 
 <script>
 import TheHotPlace from "@/components/TheHotPlace.vue";
+
 export default {
   components: { TheHotPlace },
   name: "AppMain",
