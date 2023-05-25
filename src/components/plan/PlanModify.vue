@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h3 class="plan-detail-name">계획 이름 : {{ planDetails.planName }}</h3>
+    <h3 class="plan-detail-name">{{ planDetails.planName }}</h3>
     <div ref="sortableContainer">
       <tr v-for="(image, index) in planDetails.attractionImages" :key="image">
         <td>
@@ -69,26 +69,22 @@ export default {
       this.planDetails.descripts.splice(newIndex, 0, movedDescript);
       console.log(this.planDetails);
     },
-    modify() {
+    async modify() {
       console.log(this.planDetails.contentIds);
-      axios
-        .put(
-          "http://adventour.site:8080/plan/details",
-          {
-            contentIds: this.planDetails.contentIds,
-            planId: this.$route.params.item.planId,
+      await axios.put(
+        "http://adventour.site:8080/plan/details",
+        {
+          contentIds: this.planDetails.contentIds,
+          planId: this.$route.params.item.planId,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${Cookies.get("accessToken")}`,
           },
-          {
-            headers: {
-              Authorization: `Bearer ${Cookies.get("accessToken")}`,
-            },
-          }
-        )
-        .then(
-          this.$router.push({ name: "planlist" }).then(() => {
-            location.reload();
-          })
-        );
+        }
+      );
+      alert("수정되었습니다");
+      this.$router.push({ name: "planlist" });
     },
   },
 };

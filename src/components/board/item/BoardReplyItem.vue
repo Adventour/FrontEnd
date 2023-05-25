@@ -4,15 +4,16 @@
       <b-col cols="9" align="left">
         <b>{{ comment.userId }}</b>
       </b-col>
-      <b-col cols="1" align="right">
+      <!-- <b-col cols="1" align="right">
+      </b-col> -->
+      <b-col cols="3" align="right">
         <b-button
           variant="outline-danger"
           v-if="comment.userId === this.userId"
           @click="deleteReply"
+          class="mr-2"
           >삭제</b-button
         >
-      </b-col>
-      <b-col cols="2" align="left">
         {{ comment.registerTime }}
       </b-col>
     </b-row>
