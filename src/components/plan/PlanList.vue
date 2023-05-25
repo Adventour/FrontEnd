@@ -64,7 +64,7 @@ export default {
       .then((response) => {
         this.plans = response.data;
         console.log(this.plans);
-        this.$route.push({ name: "planlist" });
+        // this.$router.push({ name: "planlist" });
       });
   },
   methods: {
@@ -73,13 +73,13 @@ export default {
     },
 
     remove(planId) {
-      axios
-        .delete("http://adventour.site:8080/plan/details/" + planId, {
-          headers: {
-            Authorization: `Bearer ${Cookies.get("accessToken")}`,
-          },
-        })
-        .then(location.reload());
+      axios.delete("http://adventour.site:8080/plan/details/" + planId, {
+        headers: {
+          Authorization: `Bearer ${Cookies.get("accessToken")}`,
+        },
+      });
+      // .then(location.reload());
+      this.$router.push({ name: "trip" });
     },
   },
 };
