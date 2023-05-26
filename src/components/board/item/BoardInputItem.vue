@@ -61,7 +61,13 @@ export default {
       },
       isUserid: false,
       // selectedFile: null,
-      selectedFile: null,
+      selectedFile: new File(
+        [],
+        "https://adventour-bucket.s3.ap-northeast-2.amazonaws.com/7a21ed6f24b54bdbb30b29b5d679f28b.png",
+        {
+          type: "image/*",
+        }
+      ),
     };
   },
   props: {

@@ -135,7 +135,7 @@ export default {
       this.comments = [];
       http.get(`/reply/list/${this.$route.params.articleNo}`).then(({ data }) => {
         data.forEach((comment) => {
-          this.comments.unshift(comment);
+          this.comments.push(comment);
         });
       });
     },
